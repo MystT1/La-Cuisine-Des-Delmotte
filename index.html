@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Carnet Rose Gold</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <header>
+        <h1>Mes Délices <span>Rose Gold</span></h1>
+    </header>
+
+    <main>
+        <section id="recipe-form">
+            <h2>Ajouter une pépite culinaire</h2>
+            <div class="form-group">
+                <input type="text" id="recipe-title" placeholder="Nom de la recette...">
+                <textarea id="recipe-desc" placeholder="Ingrédients et étapes..."></textarea>
+                <button onclick="addRecipe()">Ajouter au carnet</button>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="recipes-container">
+            <h2>Mes Recettes</h2>
+            <div id="recipes-list">
+                </div>
+        </section>
+    </main>
+
+    <script>
+        function addRecipe() {
+            const title = document.getElementById('recipe-title').value;
+            const desc = document.getElementById('recipe-desc').value;
+
+            if (title === '' || desc === '') {
+                alert("Remplis tous les champs, chef !");
+                return;
+            }
+
+            const list = document.getElementById('recipes-list');
+
+            // Création de la carte recette
+            const card = document.createElement('div');
+            card.className = 'recipe-card';
+
+            card.innerHTML = `
+                <h3>${title}</h3>
+                <p>${desc}</p>
+            `;
+
+            list.prepend(card);
+
+            // Réinitialisation des champs
+            document.getElementById('recipe-title').value = '';
+            document.getElementById('recipe-desc').value = '';
+        }
+    </script>
+</body>
+</html>
