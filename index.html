@@ -3,141 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Carnet de Recettes Rose Gold</title>
+    <title>Mon Carnet Rose Gold</title>
     <style>
-        /* --- STYLE ROSE GOLD CHIC --- */
+        /* --- CONFIGURATION DES COULEURS --- */
         :root {
             --rose-gold: #b76e79;
-            --soft-pink: #fdf7f8;
-            --gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 50%, #c18b95 100%);
-            --text: #4a4a4a;
+            --rose-light: #e9b7ce;
+            --rose-pale: #fdf7f8;
+            --text-dark: #3d3d3d;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(183, 110, 121, 0.15);
+            --gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
         }
 
+        /* --- BASE & TYPO --- */
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--soft-pink);
-            color: var(--text);
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: var(--rose-pale);
+            color: var(--text-dark);
             margin: 0;
             padding: 0;
             line-height: 1.6;
         }
 
+        /* --- HEADER RESPONSIVE --- */
         header {
             background: var(--gradient);
-            color: white;
-            padding: 50px 20px;
+            color: var(--white);
+            padding: 60px 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(183, 110, 121, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; text-transform: uppercase; }
-        .subtitle { font-style: italic; opacity: 0.9; }
+        header h1 {
+            margin: 0;
+            font-size: clamp(2rem, 8vw, 3.5rem); /* Taille de police fluide */
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
 
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
+        header p {
+            font-style: italic;
+            font-weight: 300;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* --- CONTENEUR PRINCIPAL --- */
+        .main-container {
+            max-width: 1200px;
+            margin: -40px auto 40px; /* Chevauchement sur le header */
             padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
         }
 
-        /* --- STYLE DES CARTES DE RECETTES --- */
+        /* --- GRILLE DE RECETTES (Le cœur du Responsive) --- */
+        .recipe-grid {
+            display: grid;
+            /* Crée des colonnes d'au moins 300px, sinon passe à la ligne */
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- CARTE DE RECETTE --- */
         .recipe-card {
-            background: white;
-            border-radius: 15px;
+            background: var(--white);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(183, 110, 121, 0.1);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
+            border: 1px solid rgba(183, 110, 121, 0.1);
         }
 
         .recipe-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(183, 110, 121, 0.25);
         }
 
-        .recipe-header {
+        .card-header {
             background: var(--gradient);
-            color: white;
-            padding: 15px;
-            font-weight: bold;
-            font-size: 1.2rem;
+            padding: 20px;
+            color: var(--white);
             text-align: center;
         }
 
-        .recipe-body {
-            padding: 20px;
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
-        .ingredients {
-            color: var(--rose-gold);
-            font-weight: bold;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--soft-pink);
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+        }
+
+        .section-title {
             display: block;
+            color: var(--rose-gold);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            border-bottom: 1px inset var(--rose-pale);
         }
 
-        .steps {
+        .ingredients-list {
+            margin: 0 0 20px 0;
+            padding: 0;
+            list-style: none;
+            font-size: 0.95rem;
+        }
+
+        .ingredients-list li::before {
+            content: "✦ ";
+            color: var(--rose-gold);
+        }
+
+        .instructions {
+            margin: 0;
             font-size: 0.95rem;
             color: #666;
-            white-space: pre-line; /* Permet de garder les sauts de ligne */
+            white-space: pre-line;
         }
 
+        /* --- FOOTER --- */
         footer {
             text-align: center;
-            padding: 40px;
+            padding: 50px 20px;
             color: var(--rose-gold);
             font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- AJUSTEMENTS MOBILES --- */
+        @media (max-width: 600px) {
+            header { padding: 40px 15px; }
+            .main-container { margin-top: -20px; }
+            .card-content { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Délices & Or Rose</h1>
-    <p class="subtitle">Le carnet de recettes privé de la famille</p>
-</header>
+    <header>
+        <h1>Cuisine d'Or</h1>
+        <p>Les secrets gourmands de la famille</p>
+    </header>
 
-<div class="container">
+    <div class="main-container">
+        <div class="recipe-grid">
 
-    <div class="recipe-card">
-        <div class="recipe-header">Macarons Framboise</div>
-        <div class="recipe-body">
-            <span class="ingredients">Ingrédients :</span>
-            <p class="steps">
-                • 200g de sucre glace
-                • 125g de poudre d'amande
-                • 3 blancs d'oeufs
-                • Confiture de framboise
-            </p>
-            <span class="ingredients">Préparation :</span>
-            <p class="steps">1. Mixer le sucre glace et l'amande.
-            2. Monter les blancs en neige fermement.
-            3. Mélanger délicatement et cuire 12 min à 150°C.</p>
-        </div>
+            <article class="recipe-card">
+                <div class="card-header">
+                    <h2>Mousse Fraise & Or</h2>
+                </div>
+                <div class="card-content">
+                    <span class="section-title">Ingrédients</span>
+                    <ul class="ingredients-list">
+                        <li>250g de fraises fraîches</li>
+                        <li>20cl de crème liquide 30%</li>
+                        <li>40g de sucre glace</li>
+                    </ul>
+                    <span class="section-title">Instructions</span>
+                    <p class="instructions">1. Mixer les fraises en coulis.
+                    2. Monter la crème en chantilly avec le sucre.
+                    3. Mélanger délicatement les deux préparations.
+                    4. Réserver 4h au frais.</p>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="card-header">
+                    <h2>Biscuits Sablés Rose</h2>
+                </div>
+                <div class="card-content">
+                    <span class="section-title">Ingrédients</span>
+                    <ul class="ingredients-list">
+                        <li>250g de farine</li>
+                        <li>125g de beurre mou</li>
+                        <li>1 œuf</li>
+                        <li>Une pointe de colorant rose</li>
+                    </ul>
+                    <span class="section-title">Instructions</span>
+                    <p class="instructions">Sabler la farine et le beurre. Ajouter l'œuf et le colorant. Former une pâte, étaler et découper des formes. Cuire 10 min à 180°C.</p>
+                </div>
+            </article>
+
+            </div>
     </div>
 
-    <div class="recipe-card">
-        <div class="recipe-header">Cocktail Rose Gold</div>
-        <div class="recipe-body">
-            <span class="ingredients">Ingrédients :</span>
-            <p class="steps">
-                • Champagne ou Prosecco
-                • Jus de pamplemousse rose
-                • Sirop de grenadine
-            </p>
-            <span class="ingredients">Préparation :</span>
-            <p class="steps">Verser le jus dans la flûte, compléter avec le champagne et ajouter une goutte de grenadine pour l'effet dégradé.</p>
-        </div>
-    </div>
-
-    </div>
-
-<footer>
-    &copy; 2026 — Fait avec amour pour la famille
-</footer>
+    <footer>
+        &mdash; Créé avec passion &mdash;
+    </footer>
 
 </body>
 </html>
