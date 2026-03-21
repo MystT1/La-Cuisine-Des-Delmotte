@@ -8,113 +8,132 @@
     <style>
         :root {
             --rose-gold: #b76e79;
+            --rose-gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
             --rose-pale: #fdf7f8;
-            --text-dark: #4a4a4a;
         }
 
-        body { background-color: var(--rose-pale); color: var(--text-dark); font-family: 'Segoe UI', sans-serif; }
-        
-        /* En-tête simple */
-        .navbar { background: white !important; border-bottom: 2px solid var(--rose-gold); }
-        .hero { background: white; padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; }
+        body { background-color: var(--rose-pale); font-family: 'Segoe UI', sans-serif; color: #000; }
 
-        /* Recherche ultra-simple */
+        /* HEADER ROSE GOLD */
+        .site-header {
+            background: var(--rose-gradient);
+            padding: 50px 0;
+            text-align: center;
+            color: white;
+            border-bottom: 3px solid black;
+            margin-bottom: 0;
+        }
+        .site-title { font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 2.5rem; cursor: pointer; }
+
+        /* BARRE DE RECHERCHE & NAV */
+        .search-section { background: white; padding: 20px 0; border-bottom: 2px solid black; }
         .search-box {
-            max-width: 600px; margin: -25px auto 20px;
-            padding: 15px 25px; border-radius: 50px;
-            border: 2px solid var(--rose-gold); font-size: 1.1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 500px; margin: 0 auto;
+            border: 2px solid black; border-radius: 0; /* Style carré pour le look noir */
+            padding: 10px 20px;
         }
 
-        /* Onglets de navigation */
-        .nav-pills .nav-link { color: var(--rose-gold); font-weight: 600; border-radius: 20px; margin: 0 5px; }
-        .nav-pills .nav-link.active { background-color: var(--rose-gold); color: white; }
+        .nav-pills .nav-link { color: black; font-weight: bold; border-radius: 0; border: 1px solid transparent; }
+        .nav-pills .nav-link.active { background-color: black; color: white; }
 
-        /* Cartes de recettes */
+        /* BLOCS RECETTES AVEC DÉLIMITATION NOIRE */
         .recipe-card {
-            background: white; border: none; border-radius: 15px;
-            transition: 0.2s; cursor: pointer; height: 100%;
-            display: flex; flex-direction: column; justify-content: space-between;
+            background: white;
+            border: 2px solid black; /* Délimitation noire demandée */
+            border-radius: 0; 
+            transition: 0.2s;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
-        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .card-title { color: var(--rose-gold); font-weight: bold; }
-        .btn-open { background: var(--rose-gold); color: white; border-radius: 10px; border: none; padding: 8px; width: 100%; }
+        .recipe-card:hover { transform: translate(-4px, -4px); box-shadow: 6px 6px 0px black; }
+        
+        .card-header-custom {
+            background: var(--rose-gradient);
+            color: white;
+            padding: 10px;
+            border-bottom: 2px solid black;
+            font-weight: bold;
+            text-align: center;
+        }
 
-        /* Page de recette dédiée */
-        #details-view { display: none; background: white; min-height: 80vh; padding: 30px; border-radius: 20px; }
-        .back-link { color: var(--rose-gold); text-decoration: none; font-weight: bold; cursor: pointer; }
-        .ingredient-tag { background: #fce4ec; color: var(--rose-gold); padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; display: inline-block; margin: 2px; }
+        .btn-action {
+            background: black; color: white; border: none; padding: 8px; width: 100%; font-weight: bold; text-transform: uppercase;
+        }
+
+        /* PAGE DÉDIÉE */
+        #details-view { 
+            display: none; background: white; padding: 30px; 
+            border: 3px solid black; margin-top: 30px; 
+        }
+        .back-link { color: black; text-decoration: underline; font-weight: bold; cursor: pointer; }
+        .ing-badge { border: 1px solid black; padding: 4px 10px; margin: 3px; display: inline-block; background: var(--rose-pale); }
 
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container justify-content-center">
-            <h2 class="m-0 fw-bold" style="color: var(--rose-gold); cursor:pointer" onclick="showList()">✨ Rose Gold</h2>
+    <header class="site-header" onclick="showList()">
+        <div class="container">
+            <h1 class="site-title">✨ L'Atelier Rose Gold</h1>
+            <p class="m-0">Nos secrets culinaires partagés avec amour</p>
         </div>
-    </nav>
+    </header>
 
     <div id="list-view">
-        <div class="hero">
-            <h1>Cuisinons ensemble !</h1>
-            <p>Cherchez un ingrédient ou choisissez une catégorie.</p>
-        </div>
+        <section class="search-section">
+            <div class="container text-center">
+                <input type="text" id="searchInput" class="form-control search-box mb-3" placeholder="RECHERCHER UN MOT (ex: poulet, chocolat...)" onkeyup="runFilter()">
+                
+                <ul class="nav nav-pills justify-content-center">
+                    <li class="nav-item"><button class="nav-link active" onclick="setCat('all', this)">TOUT</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="setCat('entree', this)">ENTRÉES</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="setCat('plat', this)">PLATS</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="setCat('dessert', this)">DESSERTS</button></li>
+                </ul>
+            </div>
+        </section>
 
-        <div class="container">
-            <input type="text" id="searchInput" class="form-control search-box" placeholder="Ex: poulet, chocolat, avocat..." onkeyup="runFilter()">
-            
-            <ul class="nav nav-pills justify-content-center mb-4">
-                <li class="nav-item"><button class="nav-link active" onclick="setCat('all', this)">Tout</button></li>
-                <li class="nav-item"><button class="nav-link" onclick="setCat('entree', this)">Entrées</button></li>
-                <li class="nav-item"><button class="nav-link" onclick="setCat('plat', this)">Plats</button></li>
-                <li class="nav-item"><button class="nav-link" onclick="setCat('dessert', this)">Desserts</button></li>
-            </ul>
-
+        <div class="container mt-5">
             <div class="row g-4" id="grid"></div>
         </div>
     </div>
 
-    <div class="container mt-4">
+    <div class="container mb-5">
         <div id="details-view">
-            <a class="back-link" onclick="showList()">← Retour à la liste</a>
+            <span class="back-link" onclick="showList()">← RETOUR À LA LISTE</span>
             <div id="details-content" class="mt-4"></div>
         </div>
     </div>
 
     <script>
         const recipes = [
-            // ENTRÉES
-            { id: 1, cat: 'entree', title: 'Salade d\'Avocat', desc: 'Onctueux mélange avocat-crevettes.', steps: '1. Coupez les avocats. 2. Mélangez avec les crevettes et du citron.', ing: 'avocat, crevettes, citron' },
-            { id: 2, cat: 'entree', title: 'Verrine Betterave', desc: 'Douceur de betterave au fromage frais.', steps: '1. Mixez la betterave. 2. Fouettez le fromage frais. 3. Alternez en verrine.', ing: 'betterave, fromage, frais' },
-            { id: 3, cat: 'entree', title: 'Toast au Chèvre', desc: 'Pain grillé, chèvre et miel doré.', steps: '1. Grillez le pain. 2. Déposez le chèvre et le miel. 3. Passez 5 min au four.', ing: 'chevre, miel, pain' },
-            { id: 4, cat: 'entree', title: 'Soupe de Potiron', desc: 'Le réconfort de l\'automne.', steps: '1. Cuisez le potiron. 2. Mixez avec de la crème.', ing: 'potiron, creme' },
-            { id: 5, cat: 'entree', title: 'Bruschetta Tomate', desc: 'Tomates fraîches et basilic sur ail.', steps: '1. Frottez le pain avec l\'ail. 2. Ajoutez les tomates coupées.', ing: 'tomate, ail, basilic' },
-            { id: 6, cat: 'entree', title: 'Oeufs Mimosa', desc: 'Un grand classique de famille.', steps: '1. Cuisez les oeufs durs. 2. Mélangez le jaune avec de la mayo.', ing: 'oeufs, mayonnaise' },
-
-            // PLATS
-            { id: 7, cat: 'plat', title: 'Poulet au Curry', desc: 'Poulet tendre et sauce coco.', steps: '1. Dorez le poulet. 2. Versez le coco et le curry. 3. Mijotez.', ing: 'poulet, curry, coco, riz' },
-            { id: 8, cat: 'plat', title: 'Lasagnes Maison', desc: 'Bolognaise et béchamel onctueuse.', steps: '1. Préparez la sauce. 2. Alternez pâtes et sauce. 3. Gratinez.', ing: 'boeuf, tomate, pates' },
-            { id: 9, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Poisson frais et citron vert.', steps: '1. Cuisez le saumon vapeur. 2. Préparez la sauce aneth.', ing: 'saumon, citron, aneth' },
-            { id: 10, cat: 'plat', title: 'Quiche Lorraine', desc: 'Lardons et crème sur pâte brisée.', steps: '1. Garnissez la pâte. 2. Versez l\'appareil. 3. Cuisez 40 min.', ing: 'lardons, oeufs, creme' },
-            { id: 11, cat: 'plat', title: 'Carbonara', desc: 'Vraie recette italienne aux oeufs.', steps: '1. Cuisez les pâtes. 2. Mélangez oeufs et parmesan.', ing: 'pates, oeufs, parmesan' },
-            { id: 12, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Pommes de terre fondantes.', steps: '1. Tranchez fin. 2. Couvrez de crème. 3. Cuisson lente au four.', ing: 'pommes de terre, creme' },
-            { id: 13, cat: 'plat', title: 'Risotto Champignons', desc: 'Riz crémeux et parmesan.', steps: '1. Nacrez le riz. 2. Ajoutez le bouillon petit à petit.', ing: 'riz, champignons' },
-            { id: 14, cat: 'plat', title: 'Burger Maison', desc: 'Steak juteux et cheddar.', steps: '1. Toastez le pain. 2. Cuisez la viande. 3. Assemblez.', ing: 'boeuf, pain, cheddar' },
-
-            // DESSERTS
-            { id: 15, cat: 'dessert', title: 'Mousse Chocolat', desc: 'Légère et très chocolatée.', steps: '1. Fondre le chocolat. 2. Incorporez les blancs en neige.', ing: 'chocolat, oeufs' },
-            { id: 16, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Fraises fraîches et crème vanille.', steps: '1. Cuisez la pâte. 2. Garnissez de crème et de fraises.', ing: 'fraises, vanille' },
-            { id: 17, cat: 'dessert', title: 'Tiramisu', desc: 'Le plaisir du café et mascarpone.', steps: '1. Imbibez les biscuits. 2. Étalez la crème.', ing: 'mascarpone, café' },
-            { id: 18, cat: 'dessert', title: 'Moelleux Citron', desc: 'Gâteau frais et piquant.', steps: '1. Mélangez jus et farine. 2. Cuisez 25 min.', ing: 'citron, sucre' },
-            { id: 19, cat: 'dessert', title: 'Crêpes Fines', desc: 'À garnir selon vos envies.', steps: '1. Faites la pâte sans grumeaux. 2. Cuisez à la poêle.', ing: 'lait, farine' },
-            { id: 20, cat: 'dessert', title: 'Panna Cotta', desc: 'Crème cuite au coulis rouge.', steps: '1. Chauffez la crème. 2. Ajoutez la gélatine. 3. Refroidissez.', ing: 'creme, framboise' }
+            { id: 1, cat: 'entree', title: 'Salade d\'Avocat', desc: 'Mélange onctueux avocat et crevettes.', steps: '1. Coupez les avocats en dés.\n2. Ajoutez les crevettes et le jus de citron.\n3. Assaisonnez et servez frais.', ing: 'avocat, crevettes, citron' },
+            { id: 2, cat: 'entree', title: 'Toast au Chèvre', desc: 'Chèvre fondant et miel sur pain grillé.', steps: '1. Grillez les tranches de pain.\n2. Posez le fromage de chèvre et un filet de miel.\n3. Enfournez 5 min à 200°C.', ing: 'chevre, miel, pain' },
+            { id: 3, cat: 'entree', title: 'Soupe de Potiron', desc: 'Le réconfort absolu de l\'automne.', steps: '1. Cuisez le potiron avec un oignon.\n2. Mixez avec de la crème liquide.\n3. Servez avec quelques croûtons.', ing: 'potiron, creme, oignon' },
+            { id: 4, cat: 'plat', title: 'Poulet au Curry', desc: 'Poulet fondant à la crème de coco.', steps: '1. Faites dorer les morceaux de poulet.\n2. Ajoutez le curry et le lait de coco.\n3. Laissez mijoter 15 minutes.', ing: 'poulet, curry, coco, riz' },
+            { id: 5, cat: 'plat', title: 'Lasagnes Maison', desc: 'Le classique familial par excellence.', steps: '1. Préparez une bolognaise.\n2. Étalez les couches de pâtes et sauce.\n3. Ajoutez du fromage et gratinez.', ing: 'boeuf, tomate, pates, fromage' },
+            { id: 6, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Pavé de saumon frais et citron.', steps: '1. Cuisez le saumon à la vapeur.\n2. Préparez une sauce crème et aneth.\n3. Servez avec du riz basmati.', ing: 'saumon, aneth, citron, riz' },
+            { id: 7, cat: 'dessert', title: 'Mousse au Chocolat', desc: 'Aérienne et intensément chocolatée.', steps: '1. Faites fondre le chocolat noir.\n2. Incorporez les blancs d\'oeufs en neige.\n3. Laissez reposer 3h au frais.', ing: 'chocolat, oeufs, sucre' },
+            { id: 8, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Fraises fraîches et crème vanillée.', steps: '1. Cuisez la pâte sablée.\n2. Étalez la crème pâtissière.\n3. Disposez les fraises.', ing: 'fraises, vanille, farine' },
+            { id: 9, cat: 'entree', title: 'Verrine Betterave', desc: 'Fraîcheur de betterave et fromage.', steps: '1. Mixez la betterave.\n2. Mélangez au fromage frais.\n3. Dressez en petites verrines.', ing: 'betterave, fromage, frais' },
+            { id: 10, cat: 'plat', title: 'Pâtes Carbonara', desc: 'La vraie recette italienne.', steps: '1. Cuisez les pâtes al dente.\n2. Mélangez oeufs et parmesan.\n3. Ajoutez la pancetta grillée.', ing: 'pates, oeufs, parmesan, pancetta' },
+            { id: 11, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Pommes de terre et crème.', steps: '1. Tranchez les pommes de terre finement.\n2. Disposez avec de la crème et de l\'ail.\n3. Cuisez 1h à 160°C.', ing: 'pommes de terre, creme, ail' },
+            { id: 12, cat: 'dessert', title: 'Tiramisu', desc: 'Le dessert italien culte.', steps: '1. Imbibez les biscuits de café.\n2. Étalez le mélange mascarpone/oeufs.\n3. Saupoudrez de cacao.', ing: 'mascarpone, café, biscuits' },
+            { id: 13, cat: 'entree', title: 'Bruschetta Tomate', desc: 'Pain ailé et tomates au basilic.', steps: '1. Frottez le pain grillé avec de l\'ail.\n2. Ajoutez tomates, huile d\'olive et basilic.', ing: 'tomate, ail, basilic, pain' },
+            { id: 14, cat: 'plat', title: 'Quiche Lorraine', desc: 'Lardons et crème sur pâte brisée.', steps: '1. Garnissez la pâte avec des lardons grillés.\n2. Versez le mélange oeufs/crème.\n3. Cuisez 35 min.', ing: 'lardons, oeufs, creme, pate' },
+            { id: 15, cat: 'plat', title: 'Risotto Champignons', desc: 'Riz crémeux aux champignons.', steps: '1. Nacrez le riz.\n2. Ajoutez le bouillon louche après louche.\n3. Terminez avec du parmesan.', ing: 'riz, champignons, parmesan' },
+            { id: 16, cat: 'dessert', title: 'Moelleux Citron', desc: 'Un gâteau doux et acidulé.', steps: '1. Mélangez jus de citron, sucre et farine.\n2. Enfournez 25 min à 180°C.', ing: 'citron, sucre, farine' },
+            { id: 17, cat: 'dessert', title: 'Crêpes Fines', desc: 'Recette inratable pour le goûter.', steps: '1. Mélangez lait, farine et oeufs.\n2. Cuisez à la poêle avec un peu de beurre.', ing: 'lait, farine, oeufs' },
+            { id: 18, cat: 'entree', title: 'Oeufs Mimosa', desc: 'Un grand classique indémodable.', steps: '1. Cuisez les oeufs durs.\n2. Mélangez le jaune avec de la mayonnaise.', ing: 'oeufs, mayonnaise, ciboulette' },
+            { id: 19, cat: 'plat', title: 'Burger Maison', desc: 'Bœuf juteux et cheddar fondant.', steps: '1. Cuisez le steak.\n2. Assemblez avec le pain, fromage et sauce.\n3. Toastez légèrement.', ing: 'boeuf, pain burger, cheddar' },
+            { id: 20, cat: 'dessert', title: 'Panna Cotta', desc: 'Crème vanille et coulis framboise.', steps: '1. Chauffez la crème avec du sucre.\n2. Ajoutez la gélatine.\n3. Laissez figer et versez le coulis.', ing: 'creme, framboise, sucre' }
         ];
 
         let currentCat = 'all';
 
-        // Nettoyage accents
         function clean(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
         function runFilter() {
@@ -140,12 +159,12 @@
             items.forEach(r => {
                 grid.innerHTML += `
                 <div class="col-md-4">
-                    <div class="card recipe-card p-3" onclick="openRecipe(${r.id})">
-                        <div>
-                            <h5 class="card-title">${r.title}</h5>
-                            <p class="small text-muted">${r.desc}</p>
+                    <div class="card recipe-card" onclick="openRecipe(${r.id})">
+                        <div class="card-header-custom">${r.title}</div>
+                        <div class="card-body text-center p-3">
+                            <p class="small mb-3 text-muted">${r.desc}</p>
+                            <button class="btn-action">Ouvrir</button>
                         </div>
-                        <button class="btn-open">Voir la recette</button>
                     </div>
                 </div>`;
             });
@@ -156,15 +175,15 @@
             document.getElementById('list-view').classList.add('hidden');
             document.getElementById('details-view').style.display = 'block';
             document.getElementById('details-content').innerHTML = `
-                <h1 style="color:var(--rose-gold)">${r.title}</h1>
-                <p class="lead">${r.desc}</p>
+                <h1 class="fw-bold" style="color:var(--rose-gold)">${r.title}</h1>
+                <p class="lead italic">"${r.desc}"</p>
                 <div class="mt-4">
-                    <h5>Ingrédients :</h5>
-                    <div>${r.ing.split(',').map(i => `<span class="ingredient-tag">${i.trim()}</span>`).join('')}</div>
+                    <h5 class="fw-bold">INGRÉDIENTS :</h5>
+                    <div class="mb-3">${r.ing.split(',').map(i => `<span class="ing-badge">${i.trim().toUpperCase()}</span>`).join('')}</div>
                 </div>
-                <div class="mt-4 bg-light p-3 rounded">
-                    <h5>Préparation :</h5>
-                    <p style="white-space: pre-line">${r.steps}</p>
+                <div class="mt-4 border-top border-dark pt-3">
+                    <h5 class="fw-bold">PRÉPARATION :</h5>
+                    <p style="white-space: pre-line; line-height: 1.8;">${r.steps}</p>
                 </div>
             `;
             window.scrollTo(0,0);
