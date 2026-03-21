@@ -4,183 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Atelier Rose Gold</title>
-    
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3565/3565418.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <style>
         :root {
             --rose-gold: #b76e79;
-            --rose-light: #e9b7ce;
             --rose-pale: #fdf7f8;
-            --gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
+            --text-dark: #4a4a4a;
         }
 
-        body { background-color: var(--rose-pale); font-family: 'Segoe UI', sans-serif; padding-top: 80px; }
-
-        /* Navigation & Hero */
-        .navbar { background: white !important; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .hero-section { background: var(--gradient); color: white; padding: 40px 0; text-align: center; margin-bottom: 30px; }
+        body { background-color: var(--rose-pale); color: var(--text-dark); font-family: 'Segoe UI', sans-serif; }
         
-        .search-input { 
-            max-width: 500px; margin: 20px auto; border-radius: 30px; border: none; 
-            padding: 12px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        /* En-tête simple */
+        .navbar { background: white !important; border-bottom: 2px solid var(--rose-gold); }
+        .hero { background: white; padding: 40px 0; text-align: center; border-bottom: 1px solid #eee; }
+
+        /* Recherche ultra-simple */
+        .search-box {
+            max-width: 600px; margin: -25px auto 20px;
+            padding: 15px 25px; border-radius: 50px;
+            border: 2px solid var(--rose-gold); font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* Onglets */
-        .btn-outline-rose { color: var(--rose-gold); border-color: var(--rose-gold); border-radius: 20px; font-weight: 600; }
-        .btn-check:checked + .btn-outline-rose { background-color: var(--rose-gold); color: white; }
+        /* Onglets de navigation */
+        .nav-pills .nav-link { color: var(--rose-gold); font-weight: 600; border-radius: 20px; margin: 0 5px; }
+        .nav-pills .nav-link.active { background-color: var(--rose-gold); color: white; }
 
-        /* Cartes */
-        .recipe-card { 
-            border: none; border-radius: 20px; transition: 0.3s; cursor: pointer; height: 100%;
-            box-shadow: 0 5px 15px rgba(183, 110, 121, 0.1);
+        /* Cartes de recettes */
+        .recipe-card {
+            background: white; border: none; border-radius: 15px;
+            transition: 0.2s; cursor: pointer; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(183, 110, 121, 0.2); }
-        .card-header-rose { background: var(--gradient); color: white; padding: 15px; border-radius: 20px 20px 0 0; text-align: center; }
+        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .card-title { color: var(--rose-gold); font-weight: bold; }
+        .btn-open { background: var(--rose-gold); color: white; border-radius: 10px; border: none; padding: 8px; width: 100%; }
 
         /* Page de recette dédiée */
-        #recipe-page { display: none; background: white; border-radius: 30px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; }
-        .back-btn { color: var(--rose-gold); cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; margin-bottom: 20px; }
-        
+        #details-view { display: none; background: white; min-height: 80vh; padding: 30px; border-radius: 20px; }
+        .back-link { color: var(--rose-gold); text-decoration: none; font-weight: bold; cursor: pointer; }
+        .ingredient-tag { background: #fce4ec; color: var(--rose-gold); padding: 4px 10px; border-radius: 15px; font-size: 0.9rem; display: inline-block; margin: 2px; }
+
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar sticky-top">
         <div class="container justify-content-center">
-            <a class="navbar-brand fw-bold" style="color: var(--rose-gold);" href="javascript:void(0)" onclick="showHome()">✨ L'ATELIER ROSE GOLD</a>
+            <h2 class="m-0 fw-bold" style="color: var(--rose-gold); cursor:pointer" onclick="showList()">✨ Rose Gold</h2>
         </div>
     </nav>
 
-    <div id="home-view">
-        <header class="hero-section">
-            <div class="container">
-                <h1 class="fw-bold">Nos Secrets de Famille</h1>
-                <input type="text" id="mainSearch" class="form-control search-input" placeholder="Chercher un ingrédient (ex: poulet, avocat, fraise...)" onkeyup="filterAll()">
-            </div>
-        </header>
+    <div id="list-view">
+        <div class="hero">
+            <h1>Cuisinons ensemble !</h1>
+            <p>Cherchez un ingrédient ou choisissez une catégorie.</p>
+        </div>
 
         <div class="container">
-            <div class="d-flex justify-content-center flex-wrap gap-2 mb-5">
-                <input type="radio" class="btn-check" name="cat" id="all" checked onclick="filterAll()">
-                <label class="btn btn-outline-rose" for="all">Tout voir</label>
-                <input type="radio" class="btn-check" name="cat" id="entree" onclick="filterAll()">
-                <label class="btn btn-outline-rose" for="entree">Entrées</label>
-                <input type="radio" class="btn-check" name="cat" id="plat" onclick="filterAll()">
-                <label class="btn btn-outline-rose" for="plat">Plats</label>
-                <input type="radio" class="btn-check" name="cat" id="dessert" onclick="filterAll()">
-                <label class="btn btn-outline-rose" for="dessert">Desserts</label>
-            </div>
+            <input type="text" id="searchInput" class="form-control search-box" placeholder="Ex: poulet, chocolat, avocat..." onkeyup="runFilter()">
+            
+            <ul class="nav nav-pills justify-content-center mb-4">
+                <li class="nav-item"><button class="nav-link active" onclick="setCat('all', this)">Tout</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="setCat('entree', this)">Entrées</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="setCat('plat', this)">Plats</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="setCat('dessert', this)">Desserts</button></li>
+            </ul>
 
-            <div class="row g-4" id="recipeGrid">
-                </div>
+            <div class="row g-4" id="grid"></div>
         </div>
     </div>
 
-    <div class="container">
-        <div id="recipe-page">
-            <a class="back-btn" onclick="showHome()">← Retour aux recettes</a>
-            <div id="recipe-content">
-                </div>
+    <div class="container mt-4">
+        <div id="details-view">
+            <a class="back-link" onclick="showList()">← Retour à la liste</a>
+            <div id="details-content" class="mt-4"></div>
         </div>
     </div>
 
     <script>
-        // BASE DE DONNÉES DES 20 RECETTES
         const recipes = [
-            { id: 1, cat: 'entree', title: 'Salade d\'Avocat Fraîche', desc: 'Un mélange onctueux d\'avocat, pamplemousse et crevettes.', steps: '1. Couper l\'avocat. 2. Décortiquer les crevettes. 3. Mélanger avec une vinaigrette citronnée.', ingredients: 'avocat, crevettes, pamplemousse, citron' },
-            { id: 2, cat: 'entree', title: 'Verrine Betterave Kiri', desc: 'Une entrée colorée et douce pour les enfants.', steps: '1. Mixer la betterave. 2. Fouetter le Kiri. 3. Alterner les couches.', ingredients: 'betterave, kiri, creme' },
-            { id: 3, cat: 'entree', title: 'Feuilleté de Chèvre', desc: 'Du fromage de chèvre fondant dans une pâte croustillante.', steps: '1. Placer le chèvre sur la pâte. 2. Ajouter du miel. 3. Cuire 15 min.', ingredients: 'chevre, miel, pate feuilletee' },
-            { id: 4, cat: 'entree', title: 'Soupe de Potiron', desc: 'La chaleur de l\'automne dans un bol soyeux.', steps: '1. Cuire le potiron. 2. Mixer avec de la crème. 3. Ajouter des noisettes.', ingredients: 'potiron, noisettes, creme' },
-            { id: 5, cat: 'entree', title: 'Bruschetta Tomate Basilic', desc: 'Le soleil de l\'Italie sur du pain grillé.', steps: '1. Griller le pain. 2. Frotter avec de l\'ail. 3. Ajouter tomates et basilic.', ingredients: 'tomate, pain, ail, basilic' },
-            
-            { id: 6, cat: 'plat', title: 'Poulet au Curry', desc: 'Un voyage épicé et crémeux avec du riz basmati.', steps: '1. Dorer le poulet. 2. Ajouter curry et lait de coco. 3. Mijoter 20 min.', ingredients: 'poulet, curry, coco, riz' },
-            { id: 7, cat: 'plat', title: 'Lasagnes Maison', desc: 'Le classique italien avec une sauce bolognaise mijotée.', steps: '1. Préparer la sauce. 2. Monter les couches. 3. Cuire 30 min au four.', ingredients: 'boeuf, tomate, pates, fromage' },
-            { id: 8, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Un pavé de poisson fondant et son riz citronné.', steps: '1. Cuire le saumon à la vapeur. 2. Faire la sauce aneth. 3. Servir chaud.', ingredients: 'saumon, aneth, citron, riz' },
-            { id: 9, cat: 'plat', title: 'Quiche Lorraine', desc: 'La recette traditionnelle aux lardons fumés.', steps: '1. Étaler la pâte. 2. Mélanger oeufs et lardons. 3. Cuire 40 min.', ingredients: 'lardons, oeufs, creme, pate' },
-            { id: 10, cat: 'plat', title: 'Risotto Champignons', desc: 'Un riz crémeux aux saveurs de sous-bois.', steps: '1. Nacrer le riz. 2. Ajouter le bouillon louche après louche. 3. Finir au parmesan.', ingredients: 'riz, champignons, parmesan' },
-            { id: 11, cat: 'plat', title: 'Pâtes Carbonara', desc: 'La vraie recette italienne sans crème fraîche.', steps: '1. Cuire les pâtes. 2. Mélanger oeufs et pecorino. 3. Ajouter la pancetta.', ingredients: 'pates, oeufs, pancetta, fromage' },
-            { id: 12, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Des pommes de terre fondantes et bien gratinées.', steps: '1. Couper en fines tranches. 2. Couvrir de crème et ail. 3. Cuire longuement.', ingredients: 'pommes de terre, ail, creme' },
-            { id: 13, cat: 'plat', title: 'Burger Maison', desc: 'Pain brioché, bœuf juteux et sauce secrète.', steps: '1. Griller le pain. 2. Cuire le steak. 3. Assembler avec le fromage.', ingredients: 'boeuf, pain burger, cheddar' },
-            
-            { id: 14, cat: 'dessert', title: 'Mousse au Chocolat', desc: 'Légère, aérienne et intensément chocolatée.', steps: '1. Fondre le chocolat. 2. Monter les blancs en neige. 3. Mélanger délicatement.', ingredients: 'chocolat, oeufs, sucre' },
-            { id: 15, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Une crème pâtissière vanillée sur pâte sablée.', steps: '1. Cuire la pâte à blanc. 2. Garnir de crème. 3. Disposer les fraises.', ingredients: 'fraises, farine, beurre, vanille' },
-            { id: 16, cat: 'dessert', title: 'Tiramisu Café', desc: 'Le dessert italien qui fond dans la bouche.', steps: '1. Imbiber les biscuits de café. 2. Mélanger mascarpone et oeufs. 3. Saupoudrer de cacao.', ingredients: 'mascarpone, café, biscuits' },
-            { id: 17, cat: 'dessert', title: 'Crêpes Gourmandes', desc: 'Fines, dorées et prêtes à être garnies.', steps: '1. Faire la pâte. 2. Laisser reposer. 3. Cuire à la poêle.', ingredients: 'farine, lait, oeufs' },
-            { id: 18, cat: 'dessert', title: 'Moelleux au Citron', desc: 'Un gâteau piquant et doux à la fois.', steps: '1. Mélanger sucre et zestes. 2. Ajouter farine et jus. 3. Cuire 25 min.', ingredients: 'citron, sucre, farine' },
-            { id: 19, cat: 'dessert', title: 'Panna Cotta Framboise', desc: 'Un nuage de crème et son coulis acidulé.', steps: '1. Chauffer la crème. 2. Ajouter la gélatine. 3. Verser le coulis froid.', ingredients: 'creme, framboise, sucre' },
-            { id: 20, cat: 'dessert', title: 'Fondant au Chocolat', desc: 'Un coeur coulant pour les vrais gourmands.', steps: '1. Fondre beurre et chocolat. 2. Ajouter oeufs. 3. Cuire 8 min.', ingredients: 'chocolat, beurre, sucre' }
+            // ENTRÉES
+            { id: 1, cat: 'entree', title: 'Salade d\'Avocat', desc: 'Onctueux mélange avocat-crevettes.', steps: '1. Coupez les avocats. 2. Mélangez avec les crevettes et du citron.', ing: 'avocat, crevettes, citron' },
+            { id: 2, cat: 'entree', title: 'Verrine Betterave', desc: 'Douceur de betterave au fromage frais.', steps: '1. Mixez la betterave. 2. Fouettez le fromage frais. 3. Alternez en verrine.', ing: 'betterave, fromage, frais' },
+            { id: 3, cat: 'entree', title: 'Toast au Chèvre', desc: 'Pain grillé, chèvre et miel doré.', steps: '1. Grillez le pain. 2. Déposez le chèvre et le miel. 3. Passez 5 min au four.', ing: 'chevre, miel, pain' },
+            { id: 4, cat: 'entree', title: 'Soupe de Potiron', desc: 'Le réconfort de l\'automne.', steps: '1. Cuisez le potiron. 2. Mixez avec de la crème.', ing: 'potiron, creme' },
+            { id: 5, cat: 'entree', title: 'Bruschetta Tomate', desc: 'Tomates fraîches et basilic sur ail.', steps: '1. Frottez le pain avec l\'ail. 2. Ajoutez les tomates coupées.', ing: 'tomate, ail, basilic' },
+            { id: 6, cat: 'entree', title: 'Oeufs Mimosa', desc: 'Un grand classique de famille.', steps: '1. Cuisez les oeufs durs. 2. Mélangez le jaune avec de la mayo.', ing: 'oeufs, mayonnaise' },
+
+            // PLATS
+            { id: 7, cat: 'plat', title: 'Poulet au Curry', desc: 'Poulet tendre et sauce coco.', steps: '1. Dorez le poulet. 2. Versez le coco et le curry. 3. Mijotez.', ing: 'poulet, curry, coco, riz' },
+            { id: 8, cat: 'plat', title: 'Lasagnes Maison', desc: 'Bolognaise et béchamel onctueuse.', steps: '1. Préparez la sauce. 2. Alternez pâtes et sauce. 3. Gratinez.', ing: 'boeuf, tomate, pates' },
+            { id: 9, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Poisson frais et citron vert.', steps: '1. Cuisez le saumon vapeur. 2. Préparez la sauce aneth.', ing: 'saumon, citron, aneth' },
+            { id: 10, cat: 'plat', title: 'Quiche Lorraine', desc: 'Lardons et crème sur pâte brisée.', steps: '1. Garnissez la pâte. 2. Versez l\'appareil. 3. Cuisez 40 min.', ing: 'lardons, oeufs, creme' },
+            { id: 11, cat: 'plat', title: 'Carbonara', desc: 'Vraie recette italienne aux oeufs.', steps: '1. Cuisez les pâtes. 2. Mélangez oeufs et parmesan.', ing: 'pates, oeufs, parmesan' },
+            { id: 12, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Pommes de terre fondantes.', steps: '1. Tranchez fin. 2. Couvrez de crème. 3. Cuisson lente au four.', ing: 'pommes de terre, creme' },
+            { id: 13, cat: 'plat', title: 'Risotto Champignons', desc: 'Riz crémeux et parmesan.', steps: '1. Nacrez le riz. 2. Ajoutez le bouillon petit à petit.', ing: 'riz, champignons' },
+            { id: 14, cat: 'plat', title: 'Burger Maison', desc: 'Steak juteux et cheddar.', steps: '1. Toastez le pain. 2. Cuisez la viande. 3. Assemblez.', ing: 'boeuf, pain, cheddar' },
+
+            // DESSERTS
+            { id: 15, cat: 'dessert', title: 'Mousse Chocolat', desc: 'Légère et très chocolatée.', steps: '1. Fondre le chocolat. 2. Incorporez les blancs en neige.', ing: 'chocolat, oeufs' },
+            { id: 16, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Fraises fraîches et crème vanille.', steps: '1. Cuisez la pâte. 2. Garnissez de crème et de fraises.', ing: 'fraises, vanille' },
+            { id: 17, cat: 'dessert', title: 'Tiramisu', desc: 'Le plaisir du café et mascarpone.', steps: '1. Imbibez les biscuits. 2. Étalez la crème.', ing: 'mascarpone, café' },
+            { id: 18, cat: 'dessert', title: 'Moelleux Citron', desc: 'Gâteau frais et piquant.', steps: '1. Mélangez jus et farine. 2. Cuisez 25 min.', ing: 'citron, sucre' },
+            { id: 19, cat: 'dessert', title: 'Crêpes Fines', desc: 'À garnir selon vos envies.', steps: '1. Faites la pâte sans grumeaux. 2. Cuisez à la poêle.', ing: 'lait, farine' },
+            { id: 20, cat: 'dessert', title: 'Panna Cotta', desc: 'Crème cuite au coulis rouge.', steps: '1. Chauffez la crème. 2. Ajoutez la gélatine. 3. Refroidissez.', ing: 'creme, framboise' }
         ];
 
-        // Fonction pour retirer les accents
-        function cleanString(str) {
-            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        }
+        let currentCat = 'all';
 
-        // Afficher la liste
-        function renderRecipes(data) {
-            const grid = document.getElementById('recipeGrid');
-            grid.innerHTML = '';
-            data.forEach(r => {
-                grid.innerHTML += `
-                    <div class="col-md-6 col-lg-4 recipe-item" onclick="viewRecipe(${r.id})">
-                        <div class="card recipe-card">
-                            <div class="card-header-rose"><h5>${r.title}</h5></div>
-                            <div class="card-body text-center">
-                                <p class="small text-muted">${r.desc}</p>
-                                <button class="btn btn-outline-rose btn-sm">Voir la préparation</button>
-                            </div>
-                        </div>
-                    </div>`;
-            });
-        }
+        // Nettoyage accents
+        function clean(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
-        // Filtrage Intelligent
-        function filterAll() {
-            const search = cleanString(document.getElementById('mainSearch').value);
-            const cat = document.querySelector('input[name="cat"]:checked').id;
-            
+        function runFilter() {
+            const query = clean(document.getElementById('searchInput').value);
             const filtered = recipes.filter(r => {
-                const matchCat = (cat === 'all' || r.cat === cat);
-                const matchSearch = cleanString(r.title).includes(search) || cleanString(r.ingredients).includes(search);
+                const matchCat = (currentCat === 'all' || r.cat === currentCat);
+                const matchSearch = clean(r.title).includes(query) || clean(r.ing).includes(query);
                 return matchCat && matchSearch;
             });
-            renderRecipes(filtered);
+            render(filtered);
         }
 
-        // Voir une recette seule
-        function viewRecipe(id) {
-            const r = recipes.find(item => item.id === id);
-            document.getElementById('home-view').classList.add('hidden');
-            document.getElementById('recipe-page').style.display = 'block';
-            
-            document.getElementById('recipe-content').innerHTML = `
-                <h1 style="color: var(--rose-gold)">${r.title}</h1>
-                <p class="lead"><em>${r.desc}</em></p>
-                <hr>
-                <div class="row">
-                    <div class="col-md-4">
-                        <h4>🛒 Ingrédients</h4>
-                        <p>${r.ingredients.split(',').join('<br>• ')}</p>
+        function setCat(cat, btn) {
+            currentCat = cat;
+            document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            runFilter();
+        }
+
+        function render(items) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = items.length ? '' : '<p class="text-center mt-4">Aucune recette trouvée...</p>';
+            items.forEach(r => {
+                grid.innerHTML += `
+                <div class="col-md-4">
+                    <div class="card recipe-card p-3" onclick="openRecipe(${r.id})">
+                        <div>
+                            <h5 class="card-title">${r.title}</h5>
+                            <p class="small text-muted">${r.desc}</p>
+                        </div>
+                        <button class="btn-open">Voir la recette</button>
                     </div>
-                    <div class="col-md-8">
-                        <h4>👩‍🍳 Étapes de préparation</h4>
-                        <p>${r.steps.replace(/\d\./g, '<br><strong>$&</strong>')}</p>
-                    </div>
+                </div>`;
+            });
+        }
+
+        function openRecipe(id) {
+            const r = recipes.find(x => x.id === id);
+            document.getElementById('list-view').classList.add('hidden');
+            document.getElementById('details-view').style.display = 'block';
+            document.getElementById('details-content').innerHTML = `
+                <h1 style="color:var(--rose-gold)">${r.title}</h1>
+                <p class="lead">${r.desc}</p>
+                <div class="mt-4">
+                    <h5>Ingrédients :</h5>
+                    <div>${r.ing.split(',').map(i => `<span class="ingredient-tag">${i.trim()}</span>`).join('')}</div>
+                </div>
+                <div class="mt-4 bg-light p-3 rounded">
+                    <h5>Préparation :</h5>
+                    <p style="white-space: pre-line">${r.steps}</p>
                 </div>
             `;
             window.scrollTo(0,0);
         }
 
-        function showHome() {
-            document.getElementById('home-view').classList.remove('hidden');
-            document.getElementById('recipe-page').style.display = 'none';
+        function showList() {
+            document.getElementById('list-view').classList.remove('hidden');
+            document.getElementById('details-view').style.display = 'none';
         }
 
-        // Lancement initial
-        renderRecipes(recipes);
+        render(recipes);
     </script>
 </body>
 </html>
