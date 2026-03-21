@@ -16,216 +16,171 @@
             --gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
         }
 
-        body {
-            background-color: var(--rose-pale);
-            font-family: 'Segoe UI', sans-serif;
-            padding-top: 70px;
-        }
+        body { background-color: var(--rose-pale); font-family: 'Segoe UI', sans-serif; padding-top: 80px; }
 
-        .hero-section {
-            background: var(--gradient);
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .search-input {
-            max-width: 500px;
-            margin: 20px auto;
-            border-radius: 30px;
-            border: none;
-            padding: 12px 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        /* --- Cartes Recettes --- */
-        .recipe-card {
-            border: none;
-            border-radius: 20px;
-            background: white;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(183, 110, 121, 0.1);
-            transition: all 0.3s ease;
-            height: 100%;
-            cursor: pointer;
-        }
-        .recipe-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 30px rgba(183, 110, 121, 0.2);
-        }
+        /* Navigation & Hero */
+        .navbar { background: white !important; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .hero-section { background: var(--gradient); color: white; padding: 40px 0; text-align: center; margin-bottom: 30px; }
         
-        .card-header-rose {
-            background: var(--gradient);
-            color: white;
-            padding: 20px;
-            text-align: center;
+        .search-input { 
+            max-width: 500px; margin: 20px auto; border-radius: 30px; border: none; 
+            padding: 12px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
         }
 
-        .btn-view {
-            background-color: var(--rose-gold);
-            color: white;
-            border-radius: 20px;
-            border: none;
-            padding: 8px 20px;
-            transition: 0.3s;
-        }
-        .btn-view:hover {
-            background-color: var(--rose-light);
-            color: white;
-        }
+        /* Onglets */
+        .btn-outline-rose { color: var(--rose-gold); border-color: var(--rose-gold); border-radius: 20px; font-weight: 600; }
+        .btn-check:checked + .btn-outline-rose { background-color: var(--rose-gold); color: white; }
 
-        /* Modale Styling */
-        .modal-header {
-            background: var(--gradient);
-            color: white;
+        /* Cartes */
+        .recipe-card { 
+            border: none; border-radius: 20px; transition: 0.3s; cursor: pointer; height: 100%;
+            box-shadow: 0 5px 15px rgba(183, 110, 121, 0.1);
         }
-        .modal-content {
-            border-radius: 20px;
-            border: none;
-        }
+        .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(183, 110, 121, 0.2); }
+        .card-header-rose { background: var(--gradient); color: white; padding: 15px; border-radius: 20px 20px 0 0; text-align: center; }
 
+        /* Page de recette dédiée */
+        #recipe-page { display: none; background: white; border-radius: 30px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; }
+        .back-btn { color: var(--rose-gold); cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+        
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container justify-content-center">
-            <a class="navbar-brand text-uppercase fw-bold" style="color: var(--rose-gold);" href="#">✨ Rose Gold Cuisine</a>
+            <a class="navbar-brand fw-bold" style="color: var(--rose-gold);" href="javascript:void(0)" onclick="showHome()">✨ L'ATELIER ROSE GOLD</a>
         </div>
     </nav>
 
-    <header class="hero-section">
+    <div id="home-view">
+        <header class="hero-section">
+            <div class="container">
+                <h1 class="fw-bold">Nos Secrets de Famille</h1>
+                <input type="text" id="mainSearch" class="form-control search-input" placeholder="Chercher un ingrédient (ex: poulet, avocat, fraise...)" onkeyup="filterAll()">
+            </div>
+        </header>
+
         <div class="container">
-            <h1 class="display-5 fw-bold">L'Atelier de la Famille</h1>
-            <p class="lead">Recherchez un ingrédient pour commencer la magie...</p>
-            <input type="text" id="mainSearch" class="form-control search-input" placeholder="Ex: poulet, chocolat, riz..." onkeyup="filterAll()">
-        </div>
-    </header>
-
-    <div class="container mt-5">
-        <div class="row g-4" id="recipeGrid">
-
-            <div class="col-md-6 col-lg-4 recipe-item">
-                <div class="card recipe-card">
-                    <div class="card-header-rose">
-                        <h5 class="recipe-title mb-0">Poulet au Curry Soyeux</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <p class="text-muted small">Une base de <strong>poulet</strong> tendre, mariée à la douceur du <strong>lait de coco</strong> et relevée d'un mélange d'épices dorées.</p>
-                        <span class="d-none ingredient-list">poulet curry coco riz</span>
-                        <button class="btn btn-view" data-bs-toggle="modal" data-bs-target="#modalPoulet">Voir la recette</button>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-center flex-wrap gap-2 mb-5">
+                <input type="radio" class="btn-check" name="cat" id="all" checked onclick="filterAll()">
+                <label class="btn btn-outline-rose" for="all">Tout voir</label>
+                <input type="radio" class="btn-check" name="cat" id="entree" onclick="filterAll()">
+                <label class="btn btn-outline-rose" for="entree">Entrées</label>
+                <input type="radio" class="btn-check" name="cat" id="plat" onclick="filterAll()">
+                <label class="btn btn-outline-rose" for="plat">Plats</label>
+                <input type="radio" class="btn-check" name="cat" id="dessert" onclick="filterAll()">
+                <label class="btn btn-outline-rose" for="dessert">Desserts</label>
             </div>
 
-            <div class="col-md-6 col-lg-4 recipe-item">
-                <div class="card recipe-card">
-                    <div class="card-header-rose">
-                        <h5 class="recipe-title mb-0">Fondant Cœur Coulant</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <p class="text-muted small">L'intensité du <strong>chocolat noir</strong> fondu avec un soupçon de beurre salé pour un plaisir irrésistible.</p>
-                        <span class="d-none ingredient-list">chocolat beurre sucre dessert</span>
-                        <button class="btn btn-view" data-bs-toggle="modal" data-bs-target="#modalChoco">Voir la recette</button>
-                    </div>
+            <div class="row g-4" id="recipeGrid">
                 </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 recipe-item">
-                <div class="card recipe-card">
-                    <div class="card-header-rose">
-                        <h5 class="recipe-title mb-0">Saumon à l'Aneth</h5>
-                    </div>
-                    <div class="card-body text-center">
-                        <p class="text-muted small">Un beau pavé de <strong>saumon</strong> frais, parfumé à l'<strong>aneth</strong> et au citron pressé pour une note acidulée.</p>
-                        <span class="d-none ingredient-list">saumon poisson citron aneth</span>
-                        <button class="btn btn-view" data-bs-toggle="modal" data-bs-target="#modalSaumon">Voir la recette</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <div class="modal fade" id="modalPoulet" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Poulet au Curry Soyeux</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="container">
+        <div id="recipe-page">
+            <a class="back-btn" onclick="showHome()">← Retour aux recettes</a>
+            <div id="recipe-content">
                 </div>
-                <div class="modal-body">
-                    <h6>👩‍🍳 Préparation :</h6>
-                    <ol>
-                        <li>Découper le poulet en dés et le faire dorer.</li>
-                        <li>Ajouter les oignons et 2 cuillères de curry.</li>
-                        <li>Verser le lait de coco et laisser mijoter 15 min.</li>
-                        <li>Servir avec un riz basmati chaud.</li>
-                    </ol>
-                </div>
-            </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modalChoco" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Fondant Cœur Coulant</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6>👩‍🍳 Préparation :</h6>
-                    <ol>
-                        <li>Préchauffer le four à 200°C.</li>
-                        <li>Faire fondre 100g de chocolat avec 50g de beurre.</li>
-                        <li>Ajouter 2 œufs, 30g de sucre et une cuillère de farine.</li>
-                        <li>Cuire seulement 8 à 10 minutes.</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalSaumon" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Saumon à l'Aneth</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <h6>👩‍🍳 Préparation :</h6>
-                    <ol>
-                        <li>Placer le saumon sur une plaque de cuisson.</li>
-                        <li>Saupoudrer d'aneth frais et arroser de citron.</li>
-                        <li>Cuire au four 12 min à 180°C.</li>
-                        <li>Accompagner d'une purée maison.</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function filterAll() {
-            const input = document.getElementById('mainSearch').value.toLowerCase();
-            const recipes = document.querySelectorAll('.recipe-item');
+        // BASE DE DONNÉES DES 20 RECETTES
+        const recipes = [
+            { id: 1, cat: 'entree', title: 'Salade d\'Avocat Fraîche', desc: 'Un mélange onctueux d\'avocat, pamplemousse et crevettes.', steps: '1. Couper l\'avocat. 2. Décortiquer les crevettes. 3. Mélanger avec une vinaigrette citronnée.', ingredients: 'avocat, crevettes, pamplemousse, citron' },
+            { id: 2, cat: 'entree', title: 'Verrine Betterave Kiri', desc: 'Une entrée colorée et douce pour les enfants.', steps: '1. Mixer la betterave. 2. Fouetter le Kiri. 3. Alterner les couches.', ingredients: 'betterave, kiri, creme' },
+            { id: 3, cat: 'entree', title: 'Feuilleté de Chèvre', desc: 'Du fromage de chèvre fondant dans une pâte croustillante.', steps: '1. Placer le chèvre sur la pâte. 2. Ajouter du miel. 3. Cuire 15 min.', ingredients: 'chevre, miel, pate feuilletee' },
+            { id: 4, cat: 'entree', title: 'Soupe de Potiron', desc: 'La chaleur de l\'automne dans un bol soyeux.', steps: '1. Cuire le potiron. 2. Mixer avec de la crème. 3. Ajouter des noisettes.', ingredients: 'potiron, noisettes, creme' },
+            { id: 5, cat: 'entree', title: 'Bruschetta Tomate Basilic', desc: 'Le soleil de l\'Italie sur du pain grillé.', steps: '1. Griller le pain. 2. Frotter avec de l\'ail. 3. Ajouter tomates et basilic.', ingredients: 'tomate, pain, ail, basilic' },
+            
+            { id: 6, cat: 'plat', title: 'Poulet au Curry', desc: 'Un voyage épicé et crémeux avec du riz basmati.', steps: '1. Dorer le poulet. 2. Ajouter curry et lait de coco. 3. Mijoter 20 min.', ingredients: 'poulet, curry, coco, riz' },
+            { id: 7, cat: 'plat', title: 'Lasagnes Maison', desc: 'Le classique italien avec une sauce bolognaise mijotée.', steps: '1. Préparer la sauce. 2. Monter les couches. 3. Cuire 30 min au four.', ingredients: 'boeuf, tomate, pates, fromage' },
+            { id: 8, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Un pavé de poisson fondant et son riz citronné.', steps: '1. Cuire le saumon à la vapeur. 2. Faire la sauce aneth. 3. Servir chaud.', ingredients: 'saumon, aneth, citron, riz' },
+            { id: 9, cat: 'plat', title: 'Quiche Lorraine', desc: 'La recette traditionnelle aux lardons fumés.', steps: '1. Étaler la pâte. 2. Mélanger oeufs et lardons. 3. Cuire 40 min.', ingredients: 'lardons, oeufs, creme, pate' },
+            { id: 10, cat: 'plat', title: 'Risotto Champignons', desc: 'Un riz crémeux aux saveurs de sous-bois.', steps: '1. Nacrer le riz. 2. Ajouter le bouillon louche après louche. 3. Finir au parmesan.', ingredients: 'riz, champignons, parmesan' },
+            { id: 11, cat: 'plat', title: 'Pâtes Carbonara', desc: 'La vraie recette italienne sans crème fraîche.', steps: '1. Cuire les pâtes. 2. Mélanger oeufs et pecorino. 3. Ajouter la pancetta.', ingredients: 'pates, oeufs, pancetta, fromage' },
+            { id: 12, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Des pommes de terre fondantes et bien gratinées.', steps: '1. Couper en fines tranches. 2. Couvrir de crème et ail. 3. Cuire longuement.', ingredients: 'pommes de terre, ail, creme' },
+            { id: 13, cat: 'plat', title: 'Burger Maison', desc: 'Pain brioché, bœuf juteux et sauce secrète.', steps: '1. Griller le pain. 2. Cuire le steak. 3. Assembler avec le fromage.', ingredients: 'boeuf, pain burger, cheddar' },
+            
+            { id: 14, cat: 'dessert', title: 'Mousse au Chocolat', desc: 'Légère, aérienne et intensément chocolatée.', steps: '1. Fondre le chocolat. 2. Monter les blancs en neige. 3. Mélanger délicatement.', ingredients: 'chocolat, oeufs, sucre' },
+            { id: 15, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Une crème pâtissière vanillée sur pâte sablée.', steps: '1. Cuire la pâte à blanc. 2. Garnir de crème. 3. Disposer les fraises.', ingredients: 'fraises, farine, beurre, vanille' },
+            { id: 16, cat: 'dessert', title: 'Tiramisu Café', desc: 'Le dessert italien qui fond dans la bouche.', steps: '1. Imbiber les biscuits de café. 2. Mélanger mascarpone et oeufs. 3. Saupoudrer de cacao.', ingredients: 'mascarpone, café, biscuits' },
+            { id: 17, cat: 'dessert', title: 'Crêpes Gourmandes', desc: 'Fines, dorées et prêtes à être garnies.', steps: '1. Faire la pâte. 2. Laisser reposer. 3. Cuire à la poêle.', ingredients: 'farine, lait, oeufs' },
+            { id: 18, cat: 'dessert', title: 'Moelleux au Citron', desc: 'Un gâteau piquant et doux à la fois.', steps: '1. Mélanger sucre et zestes. 2. Ajouter farine et jus. 3. Cuire 25 min.', ingredients: 'citron, sucre, farine' },
+            { id: 19, cat: 'dessert', title: 'Panna Cotta Framboise', desc: 'Un nuage de crème et son coulis acidulé.', steps: '1. Chauffer la crème. 2. Ajouter la gélatine. 3. Verser le coulis froid.', ingredients: 'creme, framboise, sucre' },
+            { id: 20, cat: 'dessert', title: 'Fondant au Chocolat', desc: 'Un coeur coulant pour les vrais gourmands.', steps: '1. Fondre beurre et chocolat. 2. Ajouter oeufs. 3. Cuire 8 min.', ingredients: 'chocolat, beurre, sucre' }
+        ];
 
-            recipes.forEach(recipe => {
-                const title = recipe.querySelector('.recipe-title').innerText.toLowerCase();
-                const ingredients = recipe.querySelector('.ingredient-list').innerText.toLowerCase();
+        // Fonction pour retirer les accents
+        function cleanString(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
 
-                if (title.includes(input) || ingredients.includes(input)) {
-                    recipe.classList.remove('hidden');
-                } else {
-                    recipe.classList.add('hidden');
-                }
+        // Afficher la liste
+        function renderRecipes(data) {
+            const grid = document.getElementById('recipeGrid');
+            grid.innerHTML = '';
+            data.forEach(r => {
+                grid.innerHTML += `
+                    <div class="col-md-6 col-lg-4 recipe-item" onclick="viewRecipe(${r.id})">
+                        <div class="card recipe-card">
+                            <div class="card-header-rose"><h5>${r.title}</h5></div>
+                            <div class="card-body text-center">
+                                <p class="small text-muted">${r.desc}</p>
+                                <button class="btn btn-outline-rose btn-sm">Voir la préparation</button>
+                            </div>
+                        </div>
+                    </div>`;
             });
         }
+
+        // Filtrage Intelligent
+        function filterAll() {
+            const search = cleanString(document.getElementById('mainSearch').value);
+            const cat = document.querySelector('input[name="cat"]:checked').id;
+            
+            const filtered = recipes.filter(r => {
+                const matchCat = (cat === 'all' || r.cat === cat);
+                const matchSearch = cleanString(r.title).includes(search) || cleanString(r.ingredients).includes(search);
+                return matchCat && matchSearch;
+            });
+            renderRecipes(filtered);
+        }
+
+        // Voir une recette seule
+        function viewRecipe(id) {
+            const r = recipes.find(item => item.id === id);
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('recipe-page').style.display = 'block';
+            
+            document.getElementById('recipe-content').innerHTML = `
+                <h1 style="color: var(--rose-gold)">${r.title}</h1>
+                <p class="lead"><em>${r.desc}</em></p>
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>🛒 Ingrédients</h4>
+                        <p>${r.ingredients.split(',').join('<br>• ')}</p>
+                    </div>
+                    <div class="col-md-8">
+                        <h4>👩‍🍳 Étapes de préparation</h4>
+                        <p>${r.steps.replace(/\d\./g, '<br><strong>$&</strong>')}</p>
+                    </div>
+                </div>
+            `;
+            window.scrollTo(0,0);
+        }
+
+        function showHome() {
+            document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('recipe-page').style.display = 'none';
+        }
+
+        // Lancement initial
+        renderRecipes(recipes);
     </script>
 </body>
 </html>
