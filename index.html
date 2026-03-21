@@ -10,7 +10,6 @@
             --rose-gold: #b76e79;
             --rose-light: #e9b7ce;
             --rose-gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
-            /* BEIGE CHAUD POUR LE FOND */
             --bg-beige: #f5efe6; 
             --rose-border: rgba(183, 110, 121, 0.4);
         }
@@ -46,7 +45,7 @@
         .nav-pills .nav-link { color: var(--rose-gold); font-weight: bold; border-radius: 20px; margin: 5px; }
         .nav-pills .nav-link.active { background: var(--rose-gradient); color: white; }
 
-        /* CARTES RECETTES */
+        /* CARTES RECETTES (MODIFIÉES POUR IMAGES) */
         .recipe-card {
             background: white;
             border: 1px solid var(--rose-border);
@@ -54,33 +53,66 @@
             transition: 0.3s;
             cursor: pointer;
             height: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Important pour les coins arrondis */
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
         }
         .recipe-card:hover { 
             transform: translateY(-8px); 
             box-shadow: 0 15px 30px rgba(183, 110, 121, 0.15); 
         }
         
-        .card-header-custom {
-            background: var(--rose-gradient);
-            color: white;
-            padding: 18px;
-            font-weight: bold;
+        /* Conteneur image dans la carte */
+        .card-img-container {
+            width: 100%;
+            height: 200px; /* Hauteur fixe pour l'image dans la grille */
+            overflow: hidden;
+            border-bottom: 1px solid var(--rose-border);
+        }
+        .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Recadre l'image pour remplir l'espace sans déformer */
+        }
+
+        .card-body-custom {
+            padding: 20px;
             text-align: center;
+            flex-grow: 1; /* Pousse le bouton vers le bas */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title-custom {
+            color: var(--rose-gold);
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .btn-action {
             background: var(--rose-gold); color: white; border: none; padding: 12px; width: 100%; 
-            font-weight: bold; border-radius: 0 0 30px 30px; text-transform: uppercase;
+            font-weight: bold; border-radius: 15px; text-transform: uppercase;
+            margin-top: 15px;
         }
 
-        /* PAGE DÉTAILS */
+        /* PAGE DÉTAILS (MODIFIÉE POUR IMAGE) */
         #details-view { 
             display: none; background: white; padding: 40px; 
             border-radius: 40px; border: 1px solid var(--rose-border);
             box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         }
+        
+        .detail-img {
+            width: 100%;
+            max-height: 400px; /* Image plus grande sur la page détails */
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid var(--rose-border);
+        }
+
         .back-link { color: var(--rose-gold); text-decoration: none; font-weight: bold; cursor: pointer; display: block; margin-bottom: 20px; }
         
         .ing-badge { 
@@ -102,7 +134,7 @@
     <header class="site-header" onclick="showList()">
         <div class="container">
             <h1 class="site-title">✨ L'Atelier Rose Gold</h1>
-            <p class="m-0">20 recettes de famille sur fond beige poudré</p>
+            <p class="m-0">Découvrez nos délices en images</p>
         </div>
     </header>
 
@@ -131,31 +163,34 @@
     </div>
 
     <script>
+        // BASE DE DONNÉES AVEC PROPRIÉTÉ IMAGE AJOUTÉE
+        // J'utilise des images d'exemple génériques (https://picsum.photos) pour le test.
         const recipes = [
-            { id: 1, cat: 'entree', title: 'Salade d\'Avocat', desc: 'Mélange onctueux avocat et crevettes.', steps: '1. Coupez les avocats en dés.\n2. Ajoutez les crevettes et le jus de citron.\n3. Assaisonnez et servez frais.', ing: 'avocat, crevettes, citron' },
-            { id: 2, cat: 'entree', title: 'Toast au Chèvre', desc: 'Chèvre fondant et miel sur pain grillé.', steps: '1. Grillez le pain.\n2. Posez le fromage et un filet de miel.\n3. Enfournez 5 min à 200°C.', ing: 'chevre, miel, pain' },
-            { id: 3, cat: 'entree', title: 'Soupe de Potiron', desc: 'Le réconfort absolu de l\'automne.', steps: '1. Cuisez le potiron avec un oignon.\n2. Mixez avec une touche de crème liquide.', ing: 'potiron, creme, oignon' },
-            { id: 4, cat: 'plat', title: 'Poulet au Curry', desc: 'Poulet fondant à la crème de coco.', steps: '1. Faites dorer les morceaux de poulet.\n2. Ajoutez le curry et le lait de coco.\n3. Laissez mijoter 15 minutes.', ing: 'poulet, curry, coco, riz' },
-            { id: 5, cat: 'plat', title: 'Lasagnes Maison', desc: 'Le classique familial par excellence.', steps: '1. Préparez une bolognaise mijotée.\n2. Alternez pâtes, sauce et béchamel.\n3. Gratinez au four.', ing: 'boeuf, tomate, pates, fromage' },
-            { id: 6, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Pavé de saumon frais et citron.', steps: '1. Cuisez le saumon à la vapeur.\n2. Préparez une sauce crème et aneth frais.', ing: 'saumon, aneth, citron, riz' },
-            { id: 7, cat: 'dessert', title: 'Mousse au Chocolat', desc: 'Légère et intensément chocolatée.', steps: '1. Faites fondre le chocolat noir.\n2. Incorporez les blancs d\'oeufs en neige ferme.\n3. Laissez reposer 3h au frais.', ing: 'chocolat, oeufs, sucre' },
-            { id: 8, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Fraises fraîches et crème vanillée.', steps: '1. Cuisez une pâte sablée.\n2. Étalez une crème pâtissière à la vanille.\n3. Disposez les fraises.', ing: 'fraises, vanille, farine' },
-            { id: 9, cat: 'entree', title: 'Verrine Betterave', desc: 'Fraîcheur de betterave et fromage frais.', steps: '1. Mixez la betterave cuite.\n2. Mélangez au fromage frais.\n3. Dressez en verrines.', ing: 'betterave, fromage, frais' },
-            { id: 10, cat: 'plat', title: 'Pâtes Carbonara', desc: 'La vraie recette italienne.', steps: '1. Cuisez les pâtes al dente.\n2. Mélangez oeufs et parmesan râpé.\n3. Ajoutez la pancetta grillée.', ing: 'pates, oeufs, parmesan, pancetta' },
-            { id: 11, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Pommes de terre fondantes et crème.', steps: '1. Tranchez les pommes de terre finement.\n2. Disposez avec crème, sel et ail.\n3. Cuisez 1h à 160°C.', ing: 'pommes de terre, creme, ail' },
-            { id: 12, cat: 'dessert', title: 'Tiramisu', desc: 'Le dessert italien culte.', steps: '1. Imbibez les biscuits de café fort.\n2. Étalez le mélange mascarpone/oeufs.\n3. Saupoudrez de cacao.', ing: 'mascarpone, café, biscuits' },
-            { id: 13, cat: 'entree', title: 'Bruschetta Tomate', desc: 'Pain ailé et tomates au basilic.', steps: '1. Frottez le pain grillé avec de l\'ail.\n2. Ajoutez tomates, huile d\'olive et basilic.', ing: 'tomate, ail, basilic, pain' },
-            { id: 14, cat: 'plat', title: 'Quiche Lorraine', desc: 'Lardons et crème sur pâte brisée.', steps: '1. Garnissez la pâte avec les lardons grillés.\n2. Versez le mélange oeufs/crème.\n3. Cuisez 35 min.', ing: 'lardons, oeufs, creme, pate' },
-            { id: 15, cat: 'plat', title: 'Risotto Champignons', desc: 'Riz crémeux aux champignons.', steps: '1. Nacrez le riz arborio.\n2. Ajoutez le bouillon louche après louche.\n3. Finissez au parmesan.', ing: 'riz, champignons, parmesan' },
-            { id: 16, cat: 'dessert', title: 'Moelleux Citron', desc: 'Un gâteau doux et acidulé.', steps: '1. Mélangez jus de citron, sucre et farine.\n2. Enfournez 25 min à 180°C.', ing: 'citron, sucre, farine' },
-            { id: 17, cat: 'dessert', title: 'Crêpes Fines', desc: 'Recette inratable pour le goûter.', steps: '1. Mélangez lait, farine et oeufs.\n2. Cuisez à la poêle avec du beurre.', ing: 'lait, farine, oeufs' },
-            { id: 18, cat: 'entree', title: 'Oeufs Mimosa', desc: 'Un grand classique indémodable.', steps: '1. Cuisez les oeufs durs 9 min.\n2. Mélangez le jaune avec de la mayonnaise.', ing: 'oeufs, mayonnaise, ciboulette' },
-            { id: 19, cat: 'plat', title: 'Burger Maison', desc: 'Bœuf juteux et cheddar fondant.', steps: '1. Cuisez le steak haché.\n2. Assemblez pain, fromage et sauce.\n3. Toastez 2 min.', ing: 'boeuf, pain, cheddar' },
-            { id: 20, cat: 'dessert', title: 'Panna Cotta', desc: 'Crème vanille et coulis framboise.', steps: '1. Chauffez la crème avec sucre et vanille.\n2. Ajoutez la gélatine et laissez figer.', ing: 'creme, framboise, sucre' }
+            { id: 1, cat: 'entree', image: 'https://picsum.photos/id/102/400/300', title: 'Salade d\'Avocat', desc: 'Mélange onctueux avocat et crevettes.', steps: '1. Coupez les avocats en dés.\n2. Ajoutez les crevettes et le jus de citron.\n3. Assaisonnez et servez frais.', ing: 'avocat, crevettes, citron' },
+            { id: 2, cat: 'entree', image: 'https://picsum.photos/id/1080/400/300', title: 'Toast au Chèvre', desc: 'Chèvre fondant et miel sur pain grillé.', steps: '1. Grillez le pain.\n2. Posez le fromage et un filet de miel.\n3. Enfournez 5 min à 200°C.', ing: 'chevre, miel, pain' },
+            { id: 3, cat: 'entree', image: 'https://picsum.photos/id/331/400/300', title: 'Soupe de Potiron', desc: 'Le réconfort absolu de l\'automne.', steps: '1. Cuisez le potiron avec un oignon.\n2. Mixez avec une touche de crème liquide.', ing: 'potiron, creme, oignon' },
+            { id: 4, cat: 'plat', image: 'https://picsum.photos/id/1025/400/300', title: 'Poulet au Curry', desc: 'Poulet fondant à la crème de coco.', steps: '1. Faites dorer les morceaux de poulet.\n2. Ajoutez le curry et le lait de coco.\n3. Laissez mijoter 15 minutes.', ing: 'poulet, curry, coco, riz' },
+            { id: 5, cat: 'plat', image: 'https://picsum.photos/id/111/400/300', title: 'Lasagnes Maison', desc: 'Le classique familial par excellence.', steps: '1. Préparez une bolognaise mijotée.\n2. Alternez pâtes, sauce et béchamel.\n3. Gratinez au four.', ing: 'boeuf, tomate, pates, fromage' },
+            { id: 6, cat: 'plat', image: 'https://picsum.photos/id/429/400/300', title: 'Saumon à l\'Aneth', desc: 'Pavé de saumon frais et citron.', steps: '1. Cuisez le saumon à la vapeur.\n2. Préparez une sauce crème et aneth frais.', ing: 'saumon, aneth, citron, riz' },
+            { id: 7, cat: 'dessert', image: 'https://picsum.photos/id/1062/400/300', title: 'Mousse au Chocolat', desc: 'Légère et intensément chocolatée.', steps: '1. Faites fondre le chocolat noir.\n2. Incorporez les blancs d\'oeufs en neige ferme.\n3. Laissez reposer 3h au frais.', ing: 'chocolat, oeufs, sucre' },
+            { id: 8, cat: 'dessert', image: 'https://picsum.photos/id/1000/400/300', title: 'Tarte aux Fraises', desc: 'Fraises fraîches et crème vanillée.', steps: '1. Cuisez une pâte sablée.\n2. Étalez une crème pâtissière à la vanille.\n3. Disposez les fraises.', ing: 'fraises, vanille, farine' },
+            { id: 9, cat: 'entree', image: 'https://picsum.photos/id/646/400/300', title: 'Verrine Betterave', desc: 'Fraîcheur de betterave et fromage frais.', steps: '1. Mixez la betterave cuite.\n2. Mélangez au fromage frais.\n3. Dressez en verrines.', ing: 'betterave, fromage, frais' },
+            { id: 10, cat: 'plat', image: 'https://picsum.photos/id/1010/400/300', title: 'Pâtes Carbonara', desc: 'La vraie recette italienne.', steps: '1. Cuisez les pâtes al dente.\n2. Mélangez oeufs et parmesan râpé.\n3. Ajoutez la pancetta grillée.', ing: 'pates, oeufs, parmesan, pancetta' },
+            { id: 11, cat: 'plat', image: 'https://picsum.photos/id/1020/400/300', title: 'Gratin Dauphinois', desc: 'Pommes de terre fondantes et crème.', steps: '1. Tranchez les pommes de terre finement.\n2. Disposez avec crème, sel et ail.\n3. Cuisez 1h à 160°C.', ing: 'pommes de terre, creme, ail' },
+            { id: 12, cat: 'dessert', image: 'https://picsum.photos/id/312/400/300', title: 'Tiramisu', desc: 'Le dessert italien culte.', steps: '1. Imbibez les biscuits de café fort.\n2. Étalez le mélange mascarpone/oeufs.\n3. Saupoudrez de cacao.', ing: 'mascarpone, café, biscuits' },
+            { id: 13, cat: 'entree', image: 'https://picsum.photos/id/1080/400/300', title: 'Bruschetta Tomate', desc: 'Pain ailé et tomates au basilic.', steps: '1. Frottez le pain grillé avec de l\'ail.\n2. Ajoutez tomates, huile d\'olive et basilic.', ing: 'tomate, ail, basilic, pain' },
+            { id: 14, cat: 'plat', image: 'https://picsum.photos/id/111/400/300', title: 'Quiche Lorraine', desc: 'Lardons et crème sur pâte brisée.', steps: '1. Garnissez la pâte avec les lardons grillés.\n2. Versez le mélange oeufs/crème.\n3. Cuisez 35 min.', ing: 'lardons, oeufs, creme, pate' },
+            { id: 15, cat: 'plat', image: 'https://picsum.photos/id/429/400/300', title: 'Risotto Champignons', desc: 'Riz crémeux aux champignons.', steps: '1. Nacrez le riz arborio.\n2. Ajoutez le bouillon louche après louche.\n3. Finissez au parmesan.', ing: 'riz, champignons, parmesan' },
+            { id: 16, cat: 'dessert', image: 'https://picsum.photos/id/646/400/300', title: 'Moelleux Citron', desc: 'Un gâteau doux et acidulé.', steps: '1. Mélangez jus de citron, sucre et farine.\n2. Enfournez 25 min à 180°C.', ing: 'citron, sucre, farine' },
+            { id: 17, cat: 'dessert', image: 'https://picsum.photos/id/312/400/300', title: 'Crêpes Fines', desc: 'Recette inratable pour le goûter.', steps: '1. Mélangez lait, farine et oeufs.\n2. Cuisez à la poêle avec du beurre.', ing: 'lait, farine, oeufs' },
+            { id: 18, cat: 'entree', image: 'https://picsum.photos/id/331/400/300', title: 'Oeufs Mimosa', desc: 'Un grand classique indémodable.', steps: '1. Cuisez les oeufs durs 9 min.\n2. Mélangez le jaune avec de la mayonnaise.', ing: 'oeufs, mayonnaise, ciboulette' },
+            { id: 19, cat: 'plat', image: 'https://picsum.photos/id/1020/400/300', title: 'Burger Maison', desc: 'Bœuf juteux et cheddar fondant.', steps: '1. Cuisez le steak haché.\n2. Assemblez pain, fromage et sauce.\n3. Toastez 2 min.', ing: 'boeuf, pain, cheddar' },
+            { id: 20, cat: 'dessert', image: 'https://picsum.photos/id/1062/400/300', title: 'Panna Cotta', desc: 'Crème vanille et coulis framboise.', steps: '1. Chauffez la crème avec sucre et vanille.\n2. Ajoutez la gélatine et laissez figer.', ing: 'creme, framboise, sucre' }
         ];
 
         let currentCat = 'all';
 
+        // Fonction pour nettoyer les accents
         function clean(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
         function runFilter() {
@@ -175,16 +210,22 @@
             runFilter();
         }
 
+        // FONCTION DE RENDU DES CARTES (MODIFIÉE POUR INCLURE <img>)
         function render(items) {
             const grid = document.getElementById('grid');
-            grid.innerHTML = items.length ? '' : '<p class="text-center mt-5">Oups, aucune recette trouvée !</p>';
+            grid.innerHTML = items.length ? '' : '<p class="text-center mt-5">Aucune recette trouvée...</p>';
             items.forEach(r => {
                 grid.innerHTML += `
                 <div class="col-md-6 col-lg-4">
                     <div class="card recipe-card" onclick="openRecipe(${r.id})">
-                        <div class="card-header-custom">${r.title}</div>
-                        <div class="card-body text-center p-4">
-                            <p class="small mb-4 text-muted"><em>${r.desc}</em></p>
+                        <div class="card-img-container">
+                            <img src="${r.image}" class="card-img-top" alt="${r.title}">
+                        </div>
+                        <div class="card-body-custom">
+                            <div>
+                                <h5 class="card-title-custom">${r.title}</h5>
+                                <p class="small text-muted"><em>${r.desc}</em></p>
+                            </div>
                             <button class="btn-action">Voir la recette</button>
                         </div>
                     </div>
@@ -192,11 +233,13 @@
             });
         }
 
+        // FONCTION PAGE DÉTAILS (MODIFIÉE POUR INCLURE <img>)
         function openRecipe(id) {
             const r = recipes.find(x => x.id === id);
             document.getElementById('list-view').classList.add('hidden');
             document.getElementById('details-view').style.display = 'block';
             document.getElementById('details-content').innerHTML = `
+                <img src="${r.image}" class="detail-img" alt="${r.title}">
                 <h1 class="fw-bold" style="color:var(--rose-gold)">${r.title}</h1>
                 <p class="lead text-muted mb-4">"${r.desc}"</p>
                 <h5 class="fw-bold" style="color:var(--rose-gold)">🛒 INGRÉDIENTS</h5>
@@ -214,6 +257,7 @@
             document.getElementById('details-view').style.display = 'none';
         }
 
+        // Lancement initial
         render(recipes);
     </script>
 </body>
