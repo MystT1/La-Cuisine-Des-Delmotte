@@ -10,15 +10,15 @@
             --rose-gold: #b76e79;
             --rose-light: #e9b7ce;
             --rose-gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
-            /* COULEUR BLANC CRÈME / BEIGE CLAIR */
-            --bg-creme: #fdfaf5; 
-            --rose-border: rgba(183, 110, 121, 0.3);
+            /* BEIGE CHAUD POUR LE FOND */
+            --bg-beige: #f5efe6; 
+            --rose-border: rgba(183, 110, 121, 0.4);
         }
 
         body { 
-            background-color: var(--bg-creme); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            color: #5a5a5a; 
+            background-color: var(--bg-beige); 
+            font-family: 'Segoe UI', sans-serif; 
+            color: #444; 
         }
 
         /* HEADER ROSE GOLD */
@@ -27,97 +27,71 @@
             padding: 60px 0;
             text-align: center;
             color: white;
-            border-bottom: 4px solid var(--rose-gold);
-            border-radius: 0 0 50px 50px;
-            box-shadow: 0 4px 20px rgba(183, 110, 121, 0.15);
+            border-bottom: 5px solid var(--rose-gold);
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
-        .site-title { font-weight: 800; text-transform: uppercase; letter-spacing: 3px; font-size: 2.5rem; cursor: pointer; }
+        .site-title { font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 2.5rem; cursor: pointer; }
 
-        /* BARRE DE RECHERCHE */
+        /* RECHERCHE & NAV */
         .search-box {
             max-width: 500px; margin: 0 auto;
             border: 2px solid var(--rose-gold); 
-            border-radius: 30px;
+            border-radius: 50px;
             padding: 12px 25px;
             background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        .search-box:focus { outline: none; border-color: var(--rose-light); box-shadow: 0 0 8px rgba(233, 183, 206, 0.5); }
 
-        /* ONGLETS */
-        .nav-pills .nav-link { color: var(--rose-gold); font-weight: bold; border-radius: 20px; margin: 0 5px; }
+        .nav-pills .nav-link { color: var(--rose-gold); font-weight: bold; border-radius: 20px; margin: 5px; }
         .nav-pills .nav-link.active { background: var(--rose-gradient); color: white; }
 
         /* CARTES RECETTES */
         .recipe-card {
             background: white;
             border: 1px solid var(--rose-border);
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            border-radius: 30px;
+            transition: 0.3s;
             cursor: pointer;
             height: 100%;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 5px 15px rgba(183, 110, 121, 0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
         .recipe-card:hover { 
             transform: translateY(-8px); 
-            border-color: var(--rose-gold);
-            box-shadow: 0 12px 25px rgba(183, 110, 121, 0.12); 
+            box-shadow: 0 15px 30px rgba(183, 110, 121, 0.15); 
         }
         
         .card-header-custom {
             background: var(--rose-gradient);
             color: white;
-            padding: 15px;
+            padding: 18px;
             font-weight: bold;
             text-align: center;
-            font-size: 1.1rem;
         }
 
         .btn-action {
-            background: var(--rose-gold); 
-            color: white; 
-            border: none; 
-            padding: 12px; 
-            width: 100%; 
-            font-weight: bold; 
-            text-transform: uppercase;
-            border-radius: 0 0 25px 25px;
-            transition: 0.3s;
+            background: var(--rose-gold); color: white; border: none; padding: 12px; width: 100%; 
+            font-weight: bold; border-radius: 0 0 30px 30px; text-transform: uppercase;
         }
-        .btn-action:hover { background: #a55d68; }
 
-        /* PAGE DÉDIÉE */
+        /* PAGE DÉTAILS */
         #details-view { 
             display: none; background: white; padding: 40px; 
-            border: 1px solid var(--rose-border); 
-            border-radius: 35px; 
-            margin-top: 30px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            border-radius: 40px; border: 1px solid var(--rose-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         }
-        .back-link { color: var(--rose-gold); text-decoration: none; font-weight: bold; cursor: pointer; margin-bottom: 25px; display: inline-block; }
+        .back-link { color: var(--rose-gold); text-decoration: none; font-weight: bold; cursor: pointer; display: block; margin-bottom: 20px; }
         
         .ing-badge { 
-            border: 1.5px solid var(--rose-gold); 
-            color: var(--rose-gold);
-            padding: 6px 18px; 
-            margin: 5px; 
-            display: inline-block; 
-            background: var(--bg-creme);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            border: 2px solid var(--rose-gold); color: var(--rose-gold);
+            padding: 6px 15px; margin: 4px; display: inline-block; 
+            background: var(--bg-beige); border-radius: 20px; font-weight: bold; font-size: 0.8rem;
         }
 
         .preparation-box {
-            border-left: 5px solid var(--rose-gold);
-            padding-left: 25px;
-            margin-top: 25px;
-            line-height: 1.8;
-            font-size: 1.05rem;
+            border-left: 4px solid var(--rose-gold);
+            padding-left: 25px; margin-top: 30px; line-height: 1.8;
         }
 
         .hidden { display: none !important; }
@@ -128,15 +102,15 @@
     <header class="site-header" onclick="showList()">
         <div class="container">
             <h1 class="site-title">✨ L'Atelier Rose Gold</h1>
-            <p class="m-0" style="opacity: 0.9;">Vos recettes de famille préférées dans un écrin de douceur</p>
+            <p class="m-0">20 recettes de famille sur fond beige poudré</p>
         </div>
     </header>
 
     <div id="list-view">
         <section class="container text-center py-4">
-            <input type="text" id="searchInput" class="form-control search-box mb-4" placeholder="Rechercher par ingrédient ou par nom..." onkeyup="runFilter()">
+            <input type="text" id="searchInput" class="form-control search-box mb-4" placeholder="Rechercher (pâte, poulet, chocolat...)" onkeyup="runFilter()">
             
-            <ul class="nav nav-pills justify-content-center mb-3">
+            <ul class="nav nav-pills justify-content-center mb-4">
                 <li class="nav-item"><button class="nav-link active" onclick="setCat('all', this)">TOUT</button></li>
                 <li class="nav-item"><button class="nav-link" onclick="setCat('entree', this)">ENTRÉES</button></li>
                 <li class="nav-item"><button class="nav-link" onclick="setCat('plat', this)">PLATS</button></li>
@@ -157,7 +131,6 @@
     </div>
 
     <script>
-        // LA BASE DE DONNÉES (20 RECETTES)
         const recipes = [
             { id: 1, cat: 'entree', title: 'Salade d\'Avocat', desc: 'Mélange onctueux avocat et crevettes.', steps: '1. Coupez les avocats en dés.\n2. Ajoutez les crevettes et le jus de citron.\n3. Assaisonnez et servez frais.', ing: 'avocat, crevettes, citron' },
             { id: 2, cat: 'entree', title: 'Toast au Chèvre', desc: 'Chèvre fondant et miel sur pain grillé.', steps: '1. Grillez le pain.\n2. Posez le fromage et un filet de miel.\n3. Enfournez 5 min à 200°C.', ing: 'chevre, miel, pain' },
@@ -167,7 +140,7 @@
             { id: 6, cat: 'plat', title: 'Saumon à l\'Aneth', desc: 'Pavé de saumon frais et citron.', steps: '1. Cuisez le saumon à la vapeur.\n2. Préparez une sauce crème et aneth frais.', ing: 'saumon, aneth, citron, riz' },
             { id: 7, cat: 'dessert', title: 'Mousse au Chocolat', desc: 'Légère et intensément chocolatée.', steps: '1. Faites fondre le chocolat noir.\n2. Incorporez les blancs d\'oeufs en neige ferme.\n3. Laissez reposer 3h au frais.', ing: 'chocolat, oeufs, sucre' },
             { id: 8, cat: 'dessert', title: 'Tarte aux Fraises', desc: 'Fraises fraîches et crème vanillée.', steps: '1. Cuisez une pâte sablée.\n2. Étalez une crème pâtissière à la vanille.\n3. Disposez les fraises.', ing: 'fraises, vanille, farine' },
-            { id: 9, cat: 'entree', title: 'Verrine Betterave', desc: 'Fraîcheur de betterave et fromage frais.', steps: '1. Mixez la betterave cuite.\n2. Mélangez au fromage frais (type St-Moret).\n3. Dressez en verrines.', ing: 'betterave, fromage, frais' },
+            { id: 9, cat: 'entree', title: 'Verrine Betterave', desc: 'Fraîcheur de betterave et fromage frais.', steps: '1. Mixez la betterave cuite.\n2. Mélangez au fromage frais.\n3. Dressez en verrines.', ing: 'betterave, fromage, frais' },
             { id: 10, cat: 'plat', title: 'Pâtes Carbonara', desc: 'La vraie recette italienne.', steps: '1. Cuisez les pâtes al dente.\n2. Mélangez oeufs et parmesan râpé.\n3. Ajoutez la pancetta grillée.', ing: 'pates, oeufs, parmesan, pancetta' },
             { id: 11, cat: 'plat', title: 'Gratin Dauphinois', desc: 'Pommes de terre fondantes et crème.', steps: '1. Tranchez les pommes de terre finement.\n2. Disposez avec crème, sel et ail.\n3. Cuisez 1h à 160°C.', ing: 'pommes de terre, creme, ail' },
             { id: 12, cat: 'dessert', title: 'Tiramisu', desc: 'Le dessert italien culte.', steps: '1. Imbibez les biscuits de café fort.\n2. Étalez le mélange mascarpone/oeufs.\n3. Saupoudrez de cacao.', ing: 'mascarpone, café, biscuits' },
@@ -183,7 +156,6 @@
 
         let currentCat = 'all';
 
-        // Fonction pour nettoyer les accents
         function clean(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
         function runFilter() {
@@ -205,7 +177,7 @@
 
         function render(items) {
             const grid = document.getElementById('grid');
-            grid.innerHTML = items.length ? '' : '<div class="col-12 text-center mt-5"><p>Oups ! Aucune recette trouvée... 👩‍🍳</p></div>';
+            grid.innerHTML = items.length ? '' : '<p class="text-center mt-5">Oups, aucune recette trouvée !</p>';
             items.forEach(r => {
                 grid.innerHTML += `
                 <div class="col-md-6 col-lg-4">
@@ -213,7 +185,7 @@
                         <div class="card-header-custom">${r.title}</div>
                         <div class="card-body text-center p-4">
                             <p class="small mb-4 text-muted"><em>${r.desc}</em></p>
-                            <button class="btn-action">Voir les détails</button>
+                            <button class="btn-action">Voir la recette</button>
                         </div>
                     </div>
                 </div>`;
@@ -227,10 +199,8 @@
             document.getElementById('details-content').innerHTML = `
                 <h1 class="fw-bold" style="color:var(--rose-gold)">${r.title}</h1>
                 <p class="lead text-muted mb-4">"${r.desc}"</p>
-                <div class="mt-4">
-                    <h5 class="fw-bold" style="color:var(--rose-gold)">🛒 INGRÉDIENTS</h5>
-                    <div class="mb-4">${r.ing.split(',').map(i => `<span class="ing-badge">${i.trim().toUpperCase()}</span>`).join('')}</div>
-                </div>
+                <h5 class="fw-bold" style="color:var(--rose-gold)">🛒 INGRÉDIENTS</h5>
+                <div class="mb-4">${r.ing.split(',').map(i => `<span class="ing-badge">${i.trim().toUpperCase()}</span>`).join('')}</div>
                 <div class="preparation-box">
                     <h5 class="fw-bold" style="color:var(--rose-gold)">👩‍🍳 PRÉPARATION</h5>
                     <p style="white-space: pre-line;">${r.steps}</p>
