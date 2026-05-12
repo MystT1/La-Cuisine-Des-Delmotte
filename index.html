@@ -4,211 +4,243 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Atelier Rose Gold</title>
-    
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3565/3565418.png">
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
     <style>
         :root {
             --rose-gold: #b76e79;
             --rose-light: #e9b7ce;
-            --rose-pale: #fdf7f8;
-            --gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
+            --rose-gradient: linear-gradient(135deg, #b76e79 0%, #e9b7ce 100%);
+            --bg-beige: #f5efe6; 
+            --rose-border: rgba(183, 110, 121, 0.4);
         }
 
-        body {
-            background-color: var(--rose-pale);
-            font-family: 'Segoe UI', sans-serif;
-            padding-top: 70px;
+        body { 
+            background-color: var(--bg-beige); 
+            font-family: 'Segoe UI', sans-serif; 
+            color: #444; 
         }
 
-        /* --- Custom Navbar --- */
-        .navbar {
-            background-color: white !important;
-            box-shadow: 0 2px 15px rgba(183, 110, 121, 0.2);
-        }
-        .navbar-brand, .nav-link {
-            color: var(--rose-gold) !important;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .nav-link:hover {
-            color: var(--rose-light) !important;
-        }
-        .navbar-toggler {
-            border-color: var(--rose-gold);
-        }
-
-        /* --- Header --- */
-        .hero-section {
-            background: var(--gradient);
-            color: white;
+        /* HEADER ROSE GOLD */
+        .site-header {
+            background: var(--rose-gradient);
             padding: 60px 0;
-            margin-bottom: 40px;
             text-align: center;
+            color: white;
+            border-bottom: 5px solid var(--rose-gold);
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .site-title { font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 2.5rem; cursor: pointer; }
+
+        /* RECHERCHE & NAV */
+        .search-box {
+            max-width: 500px; margin: 0 auto;
+            border: 2px solid var(--rose-gold); 
+            border-radius: 50px;
+            padding: 12px 25px;
+            background-color: white;
         }
 
-        /* --- Filtres --- */
-        .btn-check:checked + .btn-outline-rose {
-            background-color: var(--rose-gold);
-            color: white;
-            border-color: var(--rose-gold);
-        }
-        .btn-outline-rose {
-            color: var(--rose-gold);
-            border-color: var(--rose-gold);
-            border-radius: 20px;
-            padding: 8px 20px;
-        }
-        .btn-outline-rose:hover {
-            background-color: var(--rose-gold);
-            color: white;
-        }
+        .nav-pills .nav-link { color: var(--rose-gold); font-weight: bold; border-radius: 20px; margin: 5px; }
+        .nav-pills .nav-link.active { background: var(--rose-gradient); color: white; }
 
-        /* --- Cartes Recettes --- */
+        /* CARTES RECETTES (MODIFIÉES POUR IMAGES) */
         .recipe-card {
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            background: white;
+            border: 1px solid var(--rose-border);
+            border-radius: 30px;
+            transition: 0.3s;
+            cursor: pointer;
             height: 100%;
+            overflow: hidden; /* Important pour les coins arrondis */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
         }
-        .recipe-card:hover {
-            transform: translateY(-10px);
+        .recipe-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(183, 110, 121, 0.15); 
         }
-        .card-header-rose {
-            background: var(--gradient);
-            color: white;
-            text-align: center;
-            padding: 15px;
-            font-weight: bold;
+        
+        /* Conteneur image dans la carte */
+        .card-img-container {
+            width: 100%;
+            height: 200px; /* Hauteur fixe pour l'image dans la grille */
+            overflow: hidden;
+            border-bottom: 1px solid var(--rose-border);
         }
-        .category-badge {
-            font-size: 0.7rem;
-            background: rgba(255,255,255,0.2);
-            padding: 2px 10px;
-            border-radius: 10px;
-            display: inline-block;
-            margin-bottom: 5px;
+        .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Recadre l'image pour remplir l'espace sans déformer */
         }
 
-        /* Cache les éléments filtrés */
-        .hidden { display: none; }
+        .card-body-custom {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1; /* Pousse le bouton vers le bas */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-title-custom {
+            color: var(--rose-gold);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn-action {
+            background: var(--rose-gold); color: white; border: none; padding: 12px; width: 100%; 
+            font-weight: bold; border-radius: 15px; text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        /* PAGE DÉTAILS (MODIFIÉE POUR IMAGE) */
+        #details-view { 
+            display: none; background: white; padding: 40px; 
+            border-radius: 40px; border: 1px solid var(--rose-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+        
+        .detail-img {
+            width: 100%;
+            max-height: 400px; /* Image plus grande sur la page détails */
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid var(--rose-border);
+        }
+
+        .back-link { color: var(--rose-gold); text-decoration: none; font-weight: bold; cursor: pointer; display: block; margin-bottom: 20px; }
+        
+        .ing-badge { 
+            border: 2px solid var(--rose-gold); color: var(--rose-gold);
+            padding: 6px 15px; margin: 4px; display: inline-block; 
+            background: var(--bg-beige); border-radius: 20px; font-weight: bold; font-size: 0.8rem;
+        }
+
+        .preparation-box {
+            border-left: 4px solid var(--rose-gold);
+            padding-left: 25px; margin-top: 30px; line-height: 1.8;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <header class="site-header" onclick="showList()">
         <div class="container">
-            <a class="navbar-brand" href="#">✨ Rose Gold Cuisine</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#recettes">Recettes</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <header class="hero-section">
-        <div class="container">
-            <h1 class="display-4 fw-bold">L'Atelier de la Famille</h1>
-            <p class="lead">Nos secrets culinaires partagés avec amour.</p>
+            <h1 class="site-title">✨ L'Atelier Rose Gold</h1>
+            <p class="m-0">Découvrez nos délices en images</p>
         </div>
     </header>
 
-    <div class="container" id="recettes">
-        
-        <div class="d-flex justify-content-center flex-wrap gap-2 mb-5">
-            <input type="radio" class="btn-check" name="filter" id="all" checked onclick="filter('all')">
-            <label class="btn btn-outline-rose" for="all">Tout voir</label>
+    <div id="list-view">
+        <section class="container text-center py-4">
+            <input type="text" id="searchInput" class="form-control search-box mb-4" placeholder="Rechercher (pâte, poulet, chocolat...)" onkeyup="runFilter()">
+            
+            <ul class="nav nav-pills justify-content-center mb-4">
+                <li class="nav-item"><button class="nav-link active" onclick="setCat('all', this)">TOUT</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="setCat('entree', this)">ENTRÉES</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="setCat('plat', this)">PLATS</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="setCat('dessert', this)">DESSERTS</button></li>
+            </ul>
+        </section>
 
-            <input type="radio" class="btn-check" name="filter" id="plat" onclick="filter('plat')">
-            <label class="btn btn-outline-rose" for="plat">Plats</label>
-
-            <input type="radio" class="btn-check" name="filter" id="dessert" onclick="filter('dessert')">
-            <label class="btn btn-outline-rose" for="dessert">Desserts</label>
-
-            <input type="radio" class="btn-check" name="filter" id="patisserie" onclick="filter('patisserie')">
-            <label class="btn btn-outline-rose" for="patisserie">Pâtisseries</label>
-        </div>
-
-        <div class="row g-4" id="recipeGrid">
-
-            <div class="col-md-6 col-lg-4 recipe-item patisserie">
-                <div class="card recipe-card">
-                    <div class="card-header-rose">
-                        <span class="category-badge">Pâtisserie</span>
-                        <h5 class="m-0">Macarons Framboise</h5>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="text-muted fw-bold small">INGRÉDIENTS</h6>
-                        <p class="card-text">Poudre d'amande, sucre, blancs d'oeufs, framboises.</p>
-                        <hr>
-                        <h6 class="text-muted fw-bold small">ÉTAPES</h6>
-                        <p class="card-text small text-secondary">Mélanger, macaronner, cuire 12 min à 150°C.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 recipe-item plat">
-                <div class="card recipe-card">
-                    <div class="card-header-rose">
-                        <span class="category-badge">Plat</span>
-                        <h5 class="m-0">Risotto aux Champignons</h5>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="text-muted fw-bold small">INGRÉDIENTS</h6>
-                        <p class="card-text">Riz Arborio, champignons, parmesan, vin blanc.</p>
-                        <hr>
-                        <h6 class="text-muted fw-bold small">ÉTAPES</h6>
-                        <p class="card-text small text-secondary">Cuire à feu doux en ajoutant le bouillon louche après louche.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4 recipe-item dessert">
-                <div class="card recipe-card">
-                    <div class="card-header-rose">
-                        <span class="category-badge">Dessert</span>
-                        <h5 class="m-0">Tiramisu Rose</h5>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="text-muted fw-bold small">INGRÉDIENTS</h6>
-                        <p class="card-text">Mascarpone, biscuits rose de Reims, framboises.</p>
-                        <hr>
-                        <h6 class="text-muted fw-bold small">ÉTAPES</h6>
-                        <p class="card-text small text-secondary">Monter les blancs, mélanger au mascarpone, imbiber les biscuits.</p>
-                    </div>
-                </div>
-            </div>
-
+        <div class="container mb-5">
+            <div class="row g-4" id="grid"></div>
         </div>
     </div>
 
-    <footer class="py-5 text-center mt-5">
-        <p style="color: var(--rose-gold);">© 2026 — Fait avec amour pour la famille</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="container mb-5">
+        <div id="details-view">
+            <span class="back-link" onclick="showList()">← RETOUR AUX RECETTES</span>
+            <div id="details-content"></div>
+        </div>
+    </div>
 
     <script>
-        function filter(category) {
-            const items = document.querySelectorAll('.recipe-item');
-            items.forEach(item => {
-                if (category === 'all' || item.classList.contains(category)) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
+        // BASE DE DONNÉES AVEC PROPRIÉTÉ IMAGE AJOUTÉE
+        const recipes = [
+            { id: 1, cat: 'dessert', image: 'assets/image/crepe-cidre.jpg', title: 'Crêpe au Cidre', desc: 'Crêpe au cidre format familiale.', steps: '1. Casser les oeufs dans un récipient.\n2. Ajoutez 1,5 litre de lait avec les oeufs.\n3. Ajoutez 3 sachets de sucre vanillé. \n4. Ajoutez 3 pincées de sel. \n5. Ajoutez 75 cl de cidre. \n6. Faire fondre 60g de beurre puis verser le beurre. \n7. Ajoutez 600g de farine. \n8. Mixer le tout et laisser reposer 2h au frais.', ing: 'Cidre, oeuf, lait, sel, beurre, farine, sucre vanillé ' },
+            { id: 2, cat: 'entree', image: 'https://picsum.photos/id/1080/400/300', title: 'Toast au Chèvre', desc: 'Chèvre fondant et miel sur pain grillé.', steps: '1. Grillez le pain.\n2. Posez le fromage et un filet de miel.\n3. Enfournez 5 min à 200°C.', ing: 'chevre, miel, pain' },
+            { id: 3, cat: 'plat', image: 'https://picsum.photos/id/331/400/300', title: 'Soupe de Potiron', desc: 'Le réconfort absolu de l\'automne.', steps: '1. Cuisez le potiron avec un oignon.\n2. Mixez avec une touche de crème liquide.', ing: 'potiron, creme, oignon' },
+        ];
+
+        let currentCat = 'all';
+
+        // Fonction pour nettoyer les accents
+        function clean(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+
+        function runFilter() {
+            const query = clean(document.getElementById('searchInput').value);
+            const filtered = recipes.filter(r => {
+                const matchCat = (currentCat === 'all' || r.cat === currentCat);
+                const matchSearch = clean(r.title).includes(query) || clean(r.ing).includes(query);
+                return matchCat && matchSearch;
+            });
+            render(filtered);
+        }
+
+        function setCat(cat, btn) {
+            currentCat = cat;
+            document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            runFilter();
+        }
+
+        // FONCTION DE RENDU DES CARTES (MODIFIÉE POUR INCLURE <img>)
+        function render(items) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = items.length ? '' : '<p class="text-center mt-5">Aucune recette trouvée...</p>';
+            items.forEach(r => {
+                grid.innerHTML += `
+                <div class="col-md-6 col-lg-4">
+                    <div class="card recipe-card" onclick="openRecipe(${r.id})">
+                        <div class="card-img-container">
+                            <img src="${r.image}" class="card-img-top" alt="${r.title}">
+                        </div>
+                        <div class="card-body-custom">
+                            <div>
+                                <h5 class="card-title-custom">${r.title}</h5>
+                                <p class="small text-muted"><em>${r.desc}</em></p>
+                            </div>
+                            <button class="btn-action">Voir la recette</button>
+                        </div>
+                    </div>
+                </div>`;
             });
         }
+
+        // FONCTION PAGE DÉTAILS (MODIFIÉE POUR INCLURE <img>)
+        function openRecipe(id) {
+            const r = recipes.find(x => x.id === id);
+            document.getElementById('list-view').classList.add('hidden');
+            document.getElementById('details-view').style.display = 'block';
+            document.getElementById('details-content').innerHTML = `
+                <img src="${r.image}" class="detail-img" alt="${r.title}">
+                <h1 class="fw-bold" style="color:var(--rose-gold)">${r.title}</h1>
+                <p class="lead text-muted mb-4">"${r.desc}"</p>
+                <h5 class="fw-bold" style="color:var(--rose-gold)">🛒 INGRÉDIENTS</h5>
+                <div class="mb-4">${r.ing.split(',').map(i => `<span class="ing-badge">${i.trim().toUpperCase()}</span>`).join('')}</div>
+                <div class="preparation-box">
+                    <h5 class="fw-bold" style="color:var(--rose-gold)">👩‍🍳 PRÉPARATION</h5>
+                    <p style="white-space: pre-line;">${r.steps}</p>
+                </div>
+            `;
+            window.scrollTo(0,0);
+        }
+
+        function showList() {
+            document.getElementById('list-view').classList.remove('hidden');
+            document.getElementById('details-view').style.display = 'none';
+        }
+
+        // Lancement initial
+        render(recipes);
     </script>
 </body>
 </html>
